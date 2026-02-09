@@ -9,18 +9,18 @@ function Footer() {
           <label>Contact</label>
           <ul>
             <li>
-              <a href="https://discord.gg/G7HRsKw5s9">Daykeeper Community</a>
+              <a href="https://daykeeper.app">daykeeper.app</a>
             </li>
             <li>
               <a href="https://www.instagram.com/daykeeperapp">Instagram</a>
             </li>
             <li>
-              <a href="">contact@daykeeper.app</a>
+              <a href="mailto:contact@daykeeper.app">contact@daykeeper.app</a>
             </li>
           </ul>
         </div>
         <div>
-          <label>Our Content</label>
+          <label>Open Source</label>
           <ul>
             <li>
               <a href="https://github.com/luciano655dev/daykeeper-api">
@@ -45,11 +45,19 @@ function Footer() {
           </ul>
         </div>
         <div>
-          <label>Partnerships</label>
+          <label>Build with Daykeeper</label>
           <ul>
             <li>
+              <a href="https://daykeeper.app">Try the BETA app</a>
+            </li>
+            <li>
+              <a href="mailto:contact@daykeeper.app">
+                Roadmap / Collaboration Contact
+              </a>
+            </li>
+            <li>
               <a href="https://www.instagram.com/greenguruprojectbyshaanguru/">
-                Green Guru Project
+                Current Collaboration: Green Guru Project
               </a>
             </li>
           </ul>

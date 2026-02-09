@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import { Link } from "react-router-dom"
 
 export const NavbarContainer = styled.div`
   position: fixed;
@@ -30,7 +29,7 @@ export const NavbarContainer = styled.div`
   }
 `
 
-export const NavbarLink = styled(Link)`
+export const NavbarLink = styled.a`
   margin-right: 1em;
   background: none;
   border: none;
@@ -48,7 +47,7 @@ export const NavbarLink = styled(Link)`
   }
 `
 
-export const HamburguerMenuLink = styled(Link)`
+export const HamburguerMenuLink = styled.a`
   font-size: 2em;
   margin: 0;
   margin-bottom: 10vw;

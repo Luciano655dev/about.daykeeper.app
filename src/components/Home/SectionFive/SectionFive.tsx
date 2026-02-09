@@ -13,31 +13,33 @@ export default function SectionFive() {
         <UpperTitle>FAQ</UpperTitle>
         <SliderCard>
           <CardText>
-            <h1>What if I miss a day?</h1>
+            <h1>Is Daykeeper already live?</h1>
             <p>
-              That’s okay! Life gets busy. You can always come back and create a
-              Day later to fill the gap.
+              Yes. Daykeeper is currently in BETA at daykeeper.app, with active
+              updates and ongoing feedback collection from real users.
             </p>
           </CardText>
           <CardText>
-            <h1>Is DayKeeper free?</h1>
+            <h1>Can Daykeeper run pilot programs?</h1>
             <p>
-              Yes! There are no paid features — everything is available to
-              everyone.
+              Yes. We evaluate pilots based on use-case clarity and measurable
+              engagement outcomes. Start the conversation at
+              contact@daykeeper.app.
             </p>
           </CardText>
           <CardText>
-            <h1>Who can see my Days?</h1>
+            <h1>How can contributors start?</h1>
             <p>
-              You control the privacy. Share your Days publicly, with friends
-              only, or keep them private.
+              Review the GitHub repositories and open an issue or pull request.
+              We welcome code, docs, QA, and design support.
             </p>
           </CardText>
           <CardText>
-            <h1>What makes DayKeeper different from other apps?</h1>
+            <h1>What should we expect during beta?</h1>
             <p>
-              DayKeeper blends journaling, social media, and calendars into one
-              unique experience, making it unlike anything else.
+              BETA-stage execution with fast iteration, transparent progress,
+              and a retention-focused product strategy before large-scale
+              expansion.
             </p>
           </CardText>
         </SliderCard>

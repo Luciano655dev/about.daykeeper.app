@@ -6,8 +6,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import DefaultPage from "./App.tsx"
 import Page404 from "./pages/404/404.tsx"
 import Home from "./pages/Home.tsx"
-import Partner from "./pages/Partner.tsx"
-import Community from "./pages/Community.tsx"
 
 const router = createBrowserRouter([
   {
@@ -21,14 +19,6 @@ const router = createBrowserRouter([
       {
         path: `/`,
         element: <Home></Home>,
-      },
-      {
-        path: `/partner`,
-        element: <Partner></Partner>,
-      },
-      {
-        path: `/community`,
-        element: <Community></Community>,
       },
     ],
   },

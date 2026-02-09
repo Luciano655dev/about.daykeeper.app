@@ -47,9 +47,9 @@ function Navbar() {
       </div>
 
       <div className={`normal-items`}>
-        <NavbarLink to={"/"}>Home</NavbarLink>
-        <NavbarLink to={"/partner"}>Be a Partner</NavbarLink>
-        <NavbarLink to={"/community"}>Our Community</NavbarLink>
+        <NavbarLink href="/">Home</NavbarLink>
+        <NavbarLink href="/#sectionTwo">Overview</NavbarLink>
+        <NavbarLink href="/#sectionThree">Updates</NavbarLink>
       </div>
 
       <HamburguerMenuIcon
@@ -60,14 +60,14 @@ function Navbar() {
         onClick={toggleMenu}
       />
       <HamburguerMenu className={isMenuVisible ? "menuVisible" : "menuHidden"}>
-        <HamburguerMenuLink to={"/"} onClick={() => toggleMenu()}>
+        <HamburguerMenuLink href="/" onClick={() => toggleMenu()}>
           Home
         </HamburguerMenuLink>
-        <HamburguerMenuLink to={"/partner"} onClick={() => toggleMenu()}>
-          Be a Partner
+        <HamburguerMenuLink href="/#sectionTwo" onClick={() => toggleMenu()}>
+          Overview
         </HamburguerMenuLink>
-        <HamburguerMenuLink to={"/community"} onClick={() => toggleMenu()}>
-          Our Community
+        <HamburguerMenuLink href="/#sectionThree" onClick={() => toggleMenu()}>
+          Updates
         </HamburguerMenuLink>
       </HamburguerMenu>
     </NavbarContainer>

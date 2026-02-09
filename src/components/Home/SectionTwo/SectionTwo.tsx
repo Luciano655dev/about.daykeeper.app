@@ -10,34 +10,33 @@ export default function SectionTwo() {
   return (
     <Container id="sectionTwo" data-aos="fade-in" data-aos-delay="200">
       <OtherContainer>
-        <UpperTitle>Why Daykeeper?</UpperTitle>
+        <UpperTitle>Why Daykeeper Matters</UpperTitle>
         <SliderCard>
           <CardText>
-            <h1>More than a Social Media</h1>
+            <h1>Retention by Design</h1>
             <p>
-              Unlike traditional social media apps, DayKeeper isn’t about
-              endless scrolling or trying to get as many likes as possible. It’s
-              about celebrating your life. Post meaningful updates with photos,
-              videos, locations, and highlights of your day. Every interaction
-              becomes part of your personal timeline.
+              Daykeeper is validating a retention-first behavior model in BETA:
+              one product for memory capture, planning, and social
+              accountability. The strategy favors durable habits over vanity
+              traffic.
             </p>
           </CardText>
           <CardText>
-            <h1>A Diary with a Social touch</h1>
+            <h1>Real-World Pilots</h1>
             <p>
-              Capture your thoughts, track your emotions, and log the highlights
-              of your day while staying connected with friends. Comment, like,
-              and engage with their daily updates. Here, every moment is
-              meaningful. DayKeeper is where journaling meets genuine
-              connection.
+              We collaborate with teams that care about engagement outcomes:
+              creators, educators, communities, and small businesses. Pilot
+              programs can test real use cases and help shape integrations
+              while the platform is still evolving fast.
             </p>
           </CardText>
           <CardText>
-            <h1>A Calendar that Tells Your Story</h1>
+            <h1>Open Product Development</h1>
             <p>
-              Plan events, jot down tasks, and take notes — all while building a
-              personal calendar filled with your memories. Each day becomes a
-              treasure you can revisit, relive, and share.
+              Daykeeper is open source and welcomes builders across engineering,
+              design, QA, and documentation. Contributors influence roadmap
+              decisions directly and help deliver product improvements to active
+              beta users.
             </p>
           </CardText>
         </SliderCard>

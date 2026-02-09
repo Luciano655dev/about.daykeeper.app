@@ -14,25 +14,23 @@ export default function SectionOne() {
         <SliderCard>
           <CardText>
             <TextContent>
-              <h1>Daykeeper, turn your days into memories</h1>
+              <h1>Daykeeper turns daily life into long-term value</h1>
               <p>
-                <strong>
-                  What if your days weren’t just numbers on a calendar?
-                </strong>
-                <br /> Life isn’t just a series of dates - It’s made up of
-                moments, emotions, and achievements.
+                <strong>Daykeeper is live in BETA at daykeeper.app.</strong>
+                <br />
+                It helps people capture each day as a structured memory that
+                blends journal notes, media, goals, and social context in one
+                timeline.
                 <br />
                 <br />
-                DayKeeper is here to help you capture everything, turning every
-                day into a memory worth keeping. DayKeeper transforms the way
-                you document and organize your life. Whether you’re sharing a
-                meaningful moment or keeping track of important milestones,
-                DayKeeper lets you preserve the essence of your day in a way
-                that’s personal, meaningful, and easy to revisit.
+                Instead of splitting behavior across social feeds, note apps,
+                and calendars, Daykeeper creates one daily habit loop with
+                stronger retention potential.
                 <br />
                 <br />
-                More than just a calendar, DayKeeper is your digital diary, your
-                personal planner, and your memory keeper – all in one place.
+                Daykeeper is built as a daily-use product and an open platform
+                with clear growth signals, transparent development, and practical
+                paths for collaboration.
               </p>
             </TextContent>
           </CardText>

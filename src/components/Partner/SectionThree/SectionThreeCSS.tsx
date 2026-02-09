@@ -11,88 +11,109 @@ export const Container = styled.div`
   margin-bottom: 5em;
 
   @media (max-width: 1024px) {
+    min-height: 130vh;
     justify-content: start;
     align-items: start;
+  }
+  @media (max-width: 768px) {
+    min-height: 165vh;
   }
 `
 
 export const OtherContainer = styled.div`
   width: 80vw;
-  min-height: 80vh;
+  height: 80vh;
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-direction: column;
 
   @media (max-width: 1024px) {
     align-items: center;
     width: 100vw;
+    height: 100vh;
   }
 `
 
 export const SliderCard = styled.div`
-  position: relative;
   width: 100%;
-  min-height: 80vh;
+  height: 80vh;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: start;
+  align-items: center;
   overflow: hidden;
 
   @media (max-width: 1024px) {
     flex-direction: column;
-    justify-content: start;
-    align-items: center;
     height: auto;
   }
 `
 
-export const UpperTitle = styled.h1`
-  font-family: "Rota_Bold";
-  font-size: 3em;
-  margin: 0;
-  margin-bottom: 0.5em;
-`
-
 export const CardText = styled.div`
-  width: 45%;
-  min-height: 45%;
+  width: 60%;
+  height: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
-
-  h1 {
-    font-family: "Rota_Bold";
-    font-size: 2.5em;
-    margin: 0;
-  }
-  p {
-    font-size: 1.5em;
-    margin: 0;
-    overflow: hidden;
-  }
-  ul {
-    margin: 0;
-  }
-  li {
-    margin: 0;
-  }
-  a {
-    color: #6db5ff;
-  }
+  justify-content: start;
+  padding-top: 8em;
 
   @media (max-width: 1024px) {
     width: 90%;
     height: auto;
     margin-left: 0;
     margin-right: 0;
-    margin-top: 1em;
+    padding-top: 0;
+  }
+`
 
-    p {
+export const TextContent = styled.div`
+  h1 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-size: 3em;
+    font-family: "Rota_Bold";
+  }
+  p {
+    font-size: 1.5em;
+    margin: 0;
+    overflow: hidden;
+
+    @media (max-width: 768px) {
       font-size: 1.2em;
     }
-    h1 {
-      font-size: 2em;
+  }
+`
+
+export const CardImage = styled.div`
+  max-width: 40%;
+  margin-right: 2em;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  img {
+    max-height: 90%;
+    max-width: 100%;
+    border-radius: 16px;
+    object-fit: contain;
+  }
+
+  @media (max-width: 1024px) {
+    width: 80%;
+    margin-right: 0;
+    height: auto;
+    margin-top: 20px;
+
+    img {
+      width: 70%;
+      margin-top: 4em;
+      height: auto;
     }
+  }
+
+  @media (max-width: 768px) {
+    min-width: 20em;
   }
 `
