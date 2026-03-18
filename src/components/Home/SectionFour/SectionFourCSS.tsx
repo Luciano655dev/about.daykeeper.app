@@ -9,6 +9,7 @@ export const Container = styled.div`
   box-sizing: border-box;
   overflow: hidden;
   margin-bottom: 5em;
+  padding: 0 1.25rem;
 
   @media (max-width: 1024px) {
     min-height: 20vh;
@@ -27,7 +28,7 @@ export const OtherContainer = styled.div`
 
   @media (max-width: 1024px) {
     align-items: center;
-    width: 100vw;
+    width: 100%;
   }
 `
 
@@ -54,6 +55,7 @@ export const UpperTitle = styled.h1`
   font-size: 3em;
   margin: 0;
   margin-bottom: 0.5em;
+  color: var(--dk-ink);
 `
 
 export const CardText = styled.div`
@@ -66,6 +68,7 @@ export const CardText = styled.div`
     font-family: "Rota_Bold";
     font-size: 2.5em;
     margin: 0;
+    color: var(--dk-ink);
   }
   p {
     font-size: 1.5em;
@@ -80,14 +83,15 @@ export const CardText = styled.div`
   }
 
   @media (max-width: 1024px) {
-    width: 90%;
+    width: 100%;
     height: auto;
     margin-left: 0;
     margin-right: 0;
     margin-top: 1em;
 
     p {
-      font-size: 1.2em;
+      font-size: 1.15em;
+      line-height: 1.6;
     }
     h1 {
       font-size: 2em;

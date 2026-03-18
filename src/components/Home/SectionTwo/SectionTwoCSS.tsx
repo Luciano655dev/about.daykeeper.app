@@ -8,14 +8,12 @@ export const Container = styled.div`
   align-items: center;
   box-sizing: border-box;
   overflow: hidden;
+  padding: 0 1.25rem;
 
   @media (max-width: 1024px) {
-    min-height: 130vh;
+    min-height: auto;
     justify-content: start;
     align-items: start;
-  }
-  @media (max-width: 768px) {
-    min-height: 150vh;
   }
 `
 
@@ -29,17 +27,55 @@ export const OtherContainer = styled.div`
 
   @media (max-width: 1024px) {
     align-items: center;
-    width: 100vw;
-    height: 135vh;
+    width: 100%;
+    min-height: auto;
+  }
+`
+
+export const GalleryRow = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5em;
+  margin-bottom: 3em;
+
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: end;
+
+    > div:nth-child(2) {
+      transform: translateY(2em);
+    }
+  }
+`
+
+export const GalleryImage = styled.div`
+  width: 100%;
+  overflow: hidden;
+
+  button {
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
   }
 `
 
 export const SliderCard = styled.div`
   position: relative;
   width: 100%;
-  height: 80vh;
+  min-height: auto;
   display: flex;
   flex-direction: row;
+  gap: 2em;
   overflow: hidden;
 
   @media (max-width: 1024px) {
@@ -47,6 +83,7 @@ export const SliderCard = styled.div`
     justify-content: start;
     align-items: center;
     height: auto;
+    gap: 2.5em;
   }
 `
 
@@ -55,6 +92,8 @@ export const UpperTitle = styled.h1`
   font-size: 3em;
   margin: 0;
   margin-bottom: 0.5em;
+  color: var(--dk-ink);
+  text-align: center;
 `
 
 export const CardText = styled.div`
@@ -64,28 +103,25 @@ export const CardText = styled.div`
   flex-direction: column;
   justify-content: start;
 
-  margin-left: 2em;
-  margin-right: 2em;
-
   h1 {
     font-family: "Rota_Bold";
     font-size: 2em;
     margin-bottom: 0;
+    color: var(--dk-ink);
   }
   p {
     font-size: 1.5em;
     overflow: hidden;
 
     @media (max-width: 768px) {
-      font-size: 1.2em;
+      font-size: 1.15em;
+      line-height: 1.6;
     }
   }
 
   @media (max-width: 1024px) {
-    width: 90%;
+    width: 100%;
     height: auto;
-    margin-left: 0;
-    margin-right: 0;
 
     h1 {
       font-size: 2em;

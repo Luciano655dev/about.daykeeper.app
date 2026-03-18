@@ -9,48 +9,49 @@ export const Container = styled.div`
   box-sizing: border-box;
   overflow: hidden;
   margin-bottom: 5em;
+  padding: 0 1.25rem;
 
   @media (max-width: 1024px) {
-    min-height: 130vh;
+    min-height: auto;
     justify-content: start;
     align-items: start;
-  }
-  @media (max-width: 768px) {
-    min-height: 165vh;
+    margin-bottom: 4em;
   }
 `
 
 export const OtherContainer = styled.div`
   width: 80vw;
-  height: 80vh;
+  min-height: 80vh;
   display: flex;
   justify-content: center;
 
   @media (max-width: 1024px) {
     align-items: start;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    min-height: auto;
   }
 `
 
 export const SliderCard = styled.div`
   width: 100%;
-  height: 80vh;
+  min-height: 80vh;
   display: flex;
   flex-direction: row;
   justify-content: start;
   align-items: center;
   overflow: hidden;
+  gap: 2em;
 
   @media (max-width: 1024px) {
     flex-direction: column;
-    height: auto;
+    min-height: auto;
+    gap: 2.5em;
   }
 `
 
 export const CardText = styled.div`
   width: 60%;
-  height: 100%;
+  min-height: 100%;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -59,8 +60,8 @@ export const CardText = styled.div`
   overflow: hidden;
 
   @media (max-width: 1024px) {
-    width: 90%;
-    height: auto;
+    width: 100%;
+    min-height: auto;
     padding-top: 0;
   }
 `
@@ -71,6 +72,7 @@ export const TextContent = styled.div`
     margin-bottom: 0.5em;
     font-size: 3em;
     font-family: "Rota_Bold";
+    color: var(--dk-ink);
   }
   p {
     font-size: 1.5em;
@@ -78,41 +80,44 @@ export const TextContent = styled.div`
     overflow: hidden;
 
     @media (max-width: 768px) {
-      font-size: 1.2em;
+      font-size: 1.15em;
+      line-height: 1.6;
     }
   }
 `
 
 export const CardImage = styled.div`
-  max-width: 40%;
-  margin-left: 2em;
+  width: 48%;
+  min-width: 0;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
 
+  button {
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
   img {
-    max-height: 90%;
-    max-width: 100%;
-    border-radius: 16px;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
     object-fit: contain;
   }
 
   @media (max-width: 1024px) {
-    width: 80%;
+    width: 100%;
     margin-left: 0;
     height: auto;
-    margin-top: 20px;
 
     img {
-      width: 70%;
-      margin-top: 4em;
+      width: 100%;
       height: auto;
     }
-  }
-
-  @media (max-width: 768px) {
-    min-width: 20em;
   }
 `

@@ -6,6 +6,7 @@ export const Container = styled.div`
   width: 100vw;
   height: 100vh;
   position: absolute;
+  inset: 0;
   z-index: 0;
   pointer-events: none;
 
@@ -13,7 +14,7 @@ export const Container = styled.div`
     width: 10px;
     height: 10px;
     margin: 1px;
-    opacity: 10%;
+    opacity: 0.1;
     will-change: opacity;
   }
 `

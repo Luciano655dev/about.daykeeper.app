@@ -8,14 +8,12 @@ export const Container = styled.div`
   align-items: center;
   box-sizing: border-box;
   overflow: hidden;
+  padding: 0 1.25rem;
 
   @media (max-width: 1024px) {
-    min-height: 130vh;
+    min-height: auto;
     justify-content: start;
     align-items: start;
-  }
-  @media (max-width: 768px) {
-    min-height: 150vh;
   }
 `
 
@@ -29,15 +27,15 @@ export const OtherContainer = styled.div`
 
   @media (max-width: 1024px) {
     align-items: center;
-    width: 100vw;
-    height: 135vh;
+    width: 100%;
+    min-height: auto;
   }
 `
 
 export const SliderCard = styled.div`
   position: relative;
   width: 100%;
-  height: 80vh;
+  min-height: 80vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -55,6 +53,7 @@ export const UpperTitle = styled.h1`
   font-size: 3em;
   margin: 0;
   margin-bottom: 0.5em;
+  color: var(--dk-ink);
 `
 
 export const CardText = styled.div`
@@ -71,6 +70,7 @@ export const CardText = styled.div`
     font-family: "Rota_Bold";
     font-size: 2.5em;
     margin: 0;
+    color: var(--dk-ink);
   }
   p {
     margin: 0;
@@ -78,12 +78,13 @@ export const CardText = styled.div`
     overflow: hidden;
 
     @media (max-width: 768px) {
-      font-size: 1.2em;
+      font-size: 1.15em;
+      line-height: 1.6;
     }
   }
 
   @media (max-width: 1024px) {
-    width: 90%;
+    width: 100%;
     height: auto;
     margin-left: 0;
     margin-right: 0;

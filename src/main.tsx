@@ -6,6 +6,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import DefaultPage from "./App.tsx"
 import Page404 from "./pages/404/404.tsx"
 import Home from "./pages/Home.tsx"
+import Status from "./pages/Status.tsx"
+import Terms from "./pages/Terms.tsx"
+import Privacy from "./pages/Privacy.tsx"
+import LicensePage from "./pages/License.tsx"
 
 const router = createBrowserRouter([
   {
@@ -19,6 +23,22 @@ const router = createBrowserRouter([
       {
         path: `/`,
         element: <Home></Home>,
+      },
+      {
+        path: `/status`,
+        element: <Status></Status>,
+      },
+      {
+        path: `/terms`,
+        element: <Terms></Terms>,
+      },
+      {
+        path: `/privacy`,
+        element: <Privacy></Privacy>,
+      },
+      {
+        path: `/license`,
+        element: <LicensePage></LicensePage>,
       },
     ],
   },

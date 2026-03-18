@@ -7,13 +7,25 @@ import {
   CardImage,
 } from "./SectionThreeCSS"
 
-export default function SectionThree() {
+type SectionThreeProps = {
+  onImageClick: (src: string, alt: string) => void
+}
+
+export default function SectionThree({ onImageClick }: SectionThreeProps) {
   return (
     <Container id="sectionThree" data-aos="fade-in" data-aos-delay="200">
       <OtherContainer>
         <SliderCard>
           <CardImage>
-            <img src="/DaykeeperFeedPage.png" alt="Daykeeper feed screen" />
+            <button
+              type="button"
+              onClick={() =>
+                onImageClick("/DaykeeperFeedPage.png", "Daykeeper feed screen")
+              }
+              aria-label="Open Daykeeper feed screen image"
+            >
+              <img src="/DaykeeperFeedPage.png" alt="Daykeeper feed screen" />
+            </button>
           </CardImage>
           <CardText>
             <TextContent>

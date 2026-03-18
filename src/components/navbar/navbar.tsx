@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useLocation } from "react-router-dom"
 import {
   NavbarContainer,
   HamburguerMenu,
@@ -9,6 +10,7 @@ import {
 import "./transitions.css"
 
 function Navbar() {
+  const { pathname } = useLocation()
   const [isVisible, setIsVisible] = useState(false)
   const [isMenuVisible, setIsMenuVisible] = useState(false)
 
@@ -17,6 +19,16 @@ function Navbar() {
   }
 
   useEffect(() => {
+    if (
+      pathname === "/status" ||
+      pathname === "/terms" ||
+      pathname === "/privacy" ||
+      pathname === "/license"
+    ) {
+      setIsVisible(true)
+      return
+    }
+
     const handleScroll = () => {
       if (window.scrollY >= window.innerHeight - window.innerHeight * 0.5) {
         setIsVisible(true)
@@ -30,10 +42,13 @@ function Navbar() {
     }
 
     window.addEventListener("scroll", handleScroll)
+
+    handleScroll()
+
     return () => {
       window.removeEventListener("scroll", handleScroll)
     }
-  }, [])
+  }, [pathname])
 
   return (
     <NavbarContainer className={isVisible ? "visible" : "hidden"}>
@@ -50,6 +65,8 @@ function Navbar() {
         <NavbarLink href="/">Home</NavbarLink>
         <NavbarLink href="/#sectionTwo">Overview</NavbarLink>
         <NavbarLink href="/#sectionThree">Updates</NavbarLink>
+        <NavbarLink href="/status">Status</NavbarLink>
+        <NavbarLink href="/terms">Terms</NavbarLink>
       </div>
 
       <HamburguerMenuIcon
@@ -68,6 +85,12 @@ function Navbar() {
         </HamburguerMenuLink>
         <HamburguerMenuLink href="/#sectionThree" onClick={() => toggleMenu()}>
           Updates
+        </HamburguerMenuLink>
+        <HamburguerMenuLink href="/status" onClick={() => toggleMenu()}>
+          Status
+        </HamburguerMenuLink>
+        <HamburguerMenuLink href="/terms" onClick={() => toggleMenu()}>
+          Terms
         </HamburguerMenuLink>
       </HamburguerMenu>
     </NavbarContainer>

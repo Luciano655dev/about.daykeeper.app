@@ -7,7 +7,11 @@ import {
   CardImage,
 } from "./SectionOneCSS"
 
-export default function SectionOne() {
+type SectionOneProps = {
+  onImageClick: (src: string, alt: string) => void
+}
+
+export default function SectionOne({ onImageClick }: SectionOneProps) {
   return (
     <Container id="sectionOne" data-aos="fade-in" data-aos-delay="200">
       <OtherContainer>
@@ -36,7 +40,15 @@ export default function SectionOne() {
           </CardText>
 
           <CardImage>
-            <img src="/DaykeeperLoginPage.png"></img>
+            <button
+              type="button"
+              onClick={() =>
+                onImageClick("/DaykeeperLoginPage.png", "Daykeeper login page")
+              }
+              aria-label="Open Daykeeper login page image"
+            >
+              <img src="/DaykeeperLoginPage.png" alt="Daykeeper login page" />
+            </button>
           </CardImage>
         </SliderCard>
       </OtherContainer>

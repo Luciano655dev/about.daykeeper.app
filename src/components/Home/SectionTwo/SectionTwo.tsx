@@ -1,16 +1,60 @@
 import {
   Container,
   OtherContainer,
+  GalleryRow,
+  GalleryImage,
   SliderCard,
   UpperTitle,
   CardText,
 } from "./SectionTwoCSS"
 
-export default function SectionTwo() {
+type SectionTwoProps = {
+  onImageClick: (src: string, alt: string) => void
+}
+
+export default function SectionTwo({ onImageClick }: SectionTwoProps) {
   return (
     <Container id="sectionTwo" data-aos="fade-in" data-aos-delay="200">
       <OtherContainer>
         <UpperTitle>Why Daykeeper Matters</UpperTitle>
+        <GalleryRow>
+          <GalleryImage>
+            <button
+              type="button"
+              onClick={() =>
+                onImageClick(
+                  "/DaykeeperCreatePostPage.png",
+                  "Daykeeper create post page"
+                )
+              }
+              aria-label="Open Daykeeper create post page image"
+            >
+              <img src="/DaykeeperCreatePostPage.png" alt="Daykeeper create post page" />
+            </button>
+          </GalleryImage>
+          <GalleryImage>
+            <button
+              type="button"
+              onClick={() =>
+                onImageClick("/DaykeeperSearchPage.png", "Daykeeper search page")
+              }
+              aria-label="Open Daykeeper search page image"
+            >
+              <img src="/DaykeeperSearchPage.png" alt="Daykeeper search page" />
+            </button>
+          </GalleryImage>
+          <GalleryImage>
+            <button
+              type="button"
+              onClick={() =>
+                onImageClick("/DaykeeperProfilePage.png", "Daykeeper profile page")
+              }
+              aria-label="Open Daykeeper profile page image"
+            >
+              <img src="/DaykeeperProfilePage.png" alt="Daykeeper profile page" />
+            </button>
+          </GalleryImage>
+        </GalleryRow>
         <SliderCard>
           <CardText>
             <h1>Retention by Design</h1>

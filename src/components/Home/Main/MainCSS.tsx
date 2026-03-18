@@ -16,6 +16,7 @@ export const Container = styled.div`
     flex-direction: column;
     align-items: center;
     z-index: 5;
+    padding: 0 1.25rem;
 
     img {
       width: 7em;
@@ -27,12 +28,14 @@ export const Container = styled.div`
       margin: 0;
       line-height: 1.2;
 
-      color: #284b63;
+      color: var(--dk-slate);
       font-family: "Rota_Bold";
+      text-align: center;
     }
     h3 {
       font-size: 2em;
       margin: 0;
+      text-align: center;
     }
   }
 
@@ -49,7 +52,7 @@ export const Container = styled.div`
       font-size: 15vw;
     }
     div h3 {
-      font-size: 7vw;
+      font-size: 6vw;
     }
     div div {
       width: 80vw;

@@ -11,7 +11,7 @@ export const NavbarContainer = styled.div`
   height: 10vh;
   overflow: hidden;
   background: none;
-  background-color: #ffffff;
+  background-color: var(--dk-paper);
   transition: opacity 0.3s ease-in, visibility 0.5s ease-in;
   z-index: 10;
 
@@ -23,8 +23,11 @@ export const NavbarContainer = styled.div`
   }
 
   @media screen and (max-width: 800px) {
+    height: 4.5rem;
+
     img {
       margin-left: 1em;
+      width: 8.5em;
     }
   }
 `
@@ -34,7 +37,7 @@ export const NavbarLink = styled.a`
   background: none;
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0);
-  color: #284b63;
+  color: var(--dk-slate);
   font-size: 1.3em;
   font-family: "Rota_SemiBold";
   text-decoration: none;
@@ -42,8 +45,8 @@ export const NavbarLink = styled.a`
   cursor: pointer;
 
   &:hover {
-    color: #284b63;
-    border-bottom: 1px solid #284b63;
+    color: var(--dk-slate);
+    border-bottom: 1px solid var(--dk-slate);
   }
 `
 
@@ -52,10 +55,10 @@ export const HamburguerMenuLink = styled.a`
   margin: 0;
   margin-bottom: 10vw;
   text-decoration: none;
-  color: #284b63;
+  color: var(--dk-slate);
 
   &:active {
-    color: #284b63;
+    color: var(--dk-slate);
   }
 `
 
@@ -69,18 +72,23 @@ export const HamburguerMenu = styled.div`
   justify-content: center;
   width: 100vw;
   height: 91vh;
-  background-color: #ffffff;
+  background-color: var(--dk-paper);
 
   @media (min-width: 800px) {
     display: none;
+  }
+
+  @media (max-width: 800px) {
+    top: 4.5rem;
+    height: calc(100vh - 4.5rem);
   }
 `
 
 export const HamburguerMenuIcon = styled.input`
   display: none;
-  --s: 30px; /* Tamanho do ícone */
-  --c: #284b63; /* Cor do ícone */
-  --line-height: 2px; /* Altura das linhas */
+  --s: 30px;
+  --c: var(--dk-slate);
+  --line-height: 2px;
 
   @media (max-width: 800px) {
     display: block;
