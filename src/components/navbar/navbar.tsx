@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useLocation } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import {
   NavbarContainer,
   HamburguerMenu,
@@ -53,20 +53,20 @@ function Navbar() {
   return (
     <NavbarContainer className={isVisible ? "visible" : "hidden"}>
       <div>
-        <a href="/">
+        <Link to="/">
           <img
             src="/Logo/SVG/Daykeeper-Horizontal-Main.svg"
             alt="DayKeeper Logo"
           />
-        </a>
+        </Link>
       </div>
 
       <div className={`normal-items`}>
-        <NavbarLink href="/">Home</NavbarLink>
-        <NavbarLink href="/#sectionTwo">Overview</NavbarLink>
-        <NavbarLink href="/#sectionThree">Updates</NavbarLink>
-        <NavbarLink href="/status">Status</NavbarLink>
-        <NavbarLink href="/terms">Terms</NavbarLink>
+        <NavbarLink to="/">Home</NavbarLink>
+        <a href="/#sectionTwo">Overview</a>
+        <a href="/#sectionThree">Updates</a>
+        <NavbarLink to="/status">Status</NavbarLink>
+        <NavbarLink to="/terms">Terms</NavbarLink>
       </div>
 
       <HamburguerMenuIcon
@@ -77,19 +77,19 @@ function Navbar() {
         onClick={toggleMenu}
       />
       <HamburguerMenu className={isMenuVisible ? "menuVisible" : "menuHidden"}>
-        <HamburguerMenuLink href="/" onClick={() => toggleMenu()}>
+        <HamburguerMenuLink to="/" onClick={() => toggleMenu()}>
           Home
         </HamburguerMenuLink>
-        <HamburguerMenuLink href="/#sectionTwo" onClick={() => toggleMenu()}>
+        <a href="/#sectionTwo" onClick={() => toggleMenu()}>
           Overview
-        </HamburguerMenuLink>
-        <HamburguerMenuLink href="/#sectionThree" onClick={() => toggleMenu()}>
+        </a>
+        <a href="/#sectionThree" onClick={() => toggleMenu()}>
           Updates
-        </HamburguerMenuLink>
-        <HamburguerMenuLink href="/status" onClick={() => toggleMenu()}>
+        </a>
+        <HamburguerMenuLink to="/status" onClick={() => toggleMenu()}>
           Status
         </HamburguerMenuLink>
-        <HamburguerMenuLink href="/terms" onClick={() => toggleMenu()}>
+        <HamburguerMenuLink to="/terms" onClick={() => toggleMenu()}>
           Terms
         </HamburguerMenuLink>
       </HamburguerMenu>

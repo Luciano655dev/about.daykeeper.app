@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import {
   Container,
   Copyright,
@@ -29,16 +30,16 @@ function Footer() {
               </a>
             </li>
             <li>
-              <a href="/status">Status Dashboard</a>
+              <Link to="/status">Status Dashboard</Link>
             </li>
             <li>
-              <a href="/terms">Terms of Use</a>
+              <Link to="/terms">Terms of Use</Link>
             </li>
             <li>
-              <a href="/privacy">Privacy Policy</a>
+              <Link to="/privacy">Privacy Policy</Link>
             </li>
             <li>
-              <a href="/license">Code License</a>
+              <Link to="/license">Code License</Link>
             </li>
             <li>
               <a href="mailto:contact@daykeeper.app">contact@daykeeper.app</a>

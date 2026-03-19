@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { NavLink } from "react-router-dom"
 
 export const NavbarContainer = styled.div`
   position: fixed;
@@ -32,7 +33,7 @@ export const NavbarContainer = styled.div`
   }
 `
 
-export const NavbarLink = styled.a`
+export const NavbarLink = styled(NavLink)`
   margin-right: 1em;
   background: none;
   border: none;
@@ -50,7 +51,7 @@ export const NavbarLink = styled.a`
   }
 `
 
-export const HamburguerMenuLink = styled.a`
+export const HamburguerMenuLink = styled(NavLink)`
   font-size: 2em;
   margin: 0;
   margin-bottom: 10vw;
