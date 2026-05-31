@@ -54,6 +54,7 @@ type ContentResponse = {
   totals: {
     total: number
     posts: number
+    dayPages: number
     tasks: number
     events: number
   }
@@ -62,6 +63,7 @@ type ContentResponse = {
     bucketStart: string
     total: number
     posts: number
+    dayPages: number
     tasks: number
     events: number
   }>
@@ -76,6 +78,8 @@ type InteractionsResponse = {
     likes: number
     postLikes: number
     commentLikes: number
+    dayPageComments: number
+    dayPageLikes: number
   }
   series: Array<{
     bucket: string
@@ -85,6 +89,8 @@ type InteractionsResponse = {
     likes: number
     postLikes: number
     commentLikes: number
+    dayPageComments: number
+    dayPageLikes: number
   }>
 }
 
@@ -394,8 +400,13 @@ export default function Status() {
                       values: content.series.map((item) => item.total),
                     },
                     {
-                      label: "posts",
+                      label: "day pages",
                       color: "var(--dk-sky)",
+                      values: content.series.map((item) => item.dayPages),
+                    },
+                    {
+                      label: "posts",
+                      color: "var(--dk-slate)",
                       values: content.series.map((item) => item.posts),
                     },
                     {
@@ -405,7 +416,7 @@ export default function Status() {
                     },
                     {
                       label: "events",
-                      color: "var(--dk-slate)",
+                      color: "var(--dk-warning, #f59e0b)",
                       values: content.series.map((item) => item.events),
                     },
                   ]}
@@ -443,23 +454,28 @@ export default function Status() {
                       values: interactions.series.map((item) => item.total),
                     },
                     {
-                      label: "comments",
+                      label: "day page likes",
                       color: "var(--dk-sky)",
+                      values: interactions.series.map((item) => item.dayPageLikes),
+                    },
+                    {
+                      label: "day page comments",
+                      color: "var(--dk-success)",
+                      values: interactions.series.map((item) => item.dayPageComments),
+                    },
+                    {
+                      label: "comments",
+                      color: "var(--dk-slate)",
                       values: interactions.series.map((item) => item.comments),
                     },
                     {
-                      label: "likes",
-                      color: "var(--dk-success)",
-                      values: interactions.series.map((item) => item.likes),
-                    },
-                    {
                       label: "post likes",
-                      color: "var(--dk-slate)",
+                      color: "var(--dk-error)",
                       values: interactions.series.map((item) => item.postLikes),
                     },
                     {
                       label: "comment likes",
-                      color: "var(--dk-error)",
+                      color: "var(--dk-warning, #f59e0b)",
                       values: interactions.series.map((item) => item.commentLikes),
                     },
                   ]}
