@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, useEffect, useRef, useState } from "react"
 import axios from "axios"
 import {
   AnalyticsGrid,
@@ -27,6 +27,8 @@ import {
   StatusHeader,
 } from "./StatusCSS"
 
+// ─── Types ────────────────────────────────────────────────────────────────────
+
 type Range = {
   days: number
   bucket: "day"
@@ -38,35 +40,15 @@ type Range = {
 type UsersResponse = {
   message: string
   range: Range
-  totals: {
-    users: number
-  }
-  series: Array<{
-    bucket: string
-    bucketStart: string
-    count: number
-  }>
+  totals: { users: number }
+  series: Array<{ bucket: string; count: number }>
 }
 
 type ContentResponse = {
   message: string
   range: Range
-  totals: {
-    total: number
-    posts: number
-    dayPages: number
-    tasks: number
-    events: number
-  }
-  series: Array<{
-    bucket: string
-    bucketStart: string
-    total: number
-    posts: number
-    dayPages: number
-    tasks: number
-    events: number
-  }>
+  totals: { total: number; posts: number; dayPages: number; tasks: number; events: number }
+  series: Array<{ bucket: string; total: number; posts: number; dayPages: number; tasks: number; events: number }>
 }
 
 type InteractionsResponse = {
@@ -83,7 +65,6 @@ type InteractionsResponse = {
   }
   series: Array<{
     bucket: string
-    bucketStart: string
     total: number
     comments: number
     likes: number
@@ -107,126 +88,78 @@ type ServerStatusResponse = {
     host: string | null
     name: string | null
   }
-  system: {
-    platform: string
-    nodeVersion: string
-    pid: number
-    hostname: string
-  }
-  memory: {
-    rss: number
-    heapTotal: number
-    heapUsed: number
-    external: number
-  }
+  system: { platform: string; nodeVersion: string; pid: number; hostname: string }
+  memory: { rss: number; heapTotal: number; heapUsed: number; external: number }
 }
 
-type ApiError = {
-  status?: number
-  message: string
-}
+type ApiError = { status?: number; message: string }
+type LinePoint = { label: string; value: number }
+type ChartSeries = { label: string; color: string; values: number[] }
 
-type LineChartDatum = {
-  label: string
-  value: number
-}
+// ─── Constants ────────────────────────────────────────────────────────────────
 
-type MultiLineChartSeries = {
-  label: string
-  color: string
-  values: number[]
-}
-
-const API_DAYS_STORAGE_KEY = "daykeeper-about-admin-days"
+const API_DAYS_KEY = "daykeeper-about-admin-days"
 const apiBase = import.meta.env.VITE_DAYKEEPER_API_BASE ?? "https://api.daykeeper.app"
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
 export default function Status() {
   const [days, setDays] = useState("30")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<ApiError | null>(null)
-  const [activeUsersPoint, setActiveUsersPoint] = useState<LineChartDatum | null>(null)
-  const [activeContentIndex, setActiveContentIndex] = useState<number | null>(null)
-  const [activeInteractionsIndex, setActiveInteractionsIndex] = useState<number | null>(null)
+  const [lastRefreshed, setLastRefreshed] = useState<Date | null>(null)
+
   const [users, setUsers] = useState<UsersResponse | null>(null)
   const [content, setContent] = useState<ContentResponse | null>(null)
   const [interactions, setInteractions] = useState<InteractionsResponse | null>(null)
   const [serverStatus, setServerStatus] = useState<ServerStatusResponse | null>(null)
 
+  const [activeUsersIdx, setActiveUsersIdx] = useState<number | null>(null)
+  const [activeContentIdx, setActiveContentIdx] = useState<number | null>(null)
+  const [activeInteractionsIdx, setActiveInteractionsIdx] = useState<number | null>(null)
+
   useEffect(() => {
-    const storedDays = window.localStorage.getItem(API_DAYS_STORAGE_KEY)
-
-    if (storedDays) {
-      setDays(storedDays)
-      void fetchStatusData(storedDays)
-      return
-    }
-
-    void fetchStatusData("30")
+    const stored = window.localStorage.getItem(API_DAYS_KEY)
+    void fetchAll(stored ?? "30")
   }, [])
 
-  const fetchStatusData = async (daysOverride?: string) => {
-    const currentDays = daysOverride ?? days
-
+  const fetchAll = async (daysOverride?: string) => {
+    const d = daysOverride ?? days
     setLoading(true)
     setError(null)
-
     try {
-      const requestConfig = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-
-      const selectedDays = Number(currentDays)
-
-      const [usersResponse, contentResponse, interactionsResponse, serverResponse] =
-        await Promise.all([
-          axios.get<UsersResponse>(`${apiBase}/admin/about/users`, {
-            ...requestConfig,
-            params: { days: selectedDays },
-          }),
-          axios.get<ContentResponse>(`${apiBase}/admin/about/content`, {
-            ...requestConfig,
-            params: { days: selectedDays },
-          }),
-          axios.get<InteractionsResponse>(`${apiBase}/admin/about/interactions`, {
-            ...requestConfig,
-            params: { days: selectedDays },
-          }),
-          axios.get<ServerStatusResponse>(
-            `${apiBase}/admin/about/server-status`,
-            requestConfig
-          ),
-        ])
-
-      window.localStorage.setItem(API_DAYS_STORAGE_KEY, currentDays)
-
-      setDays(currentDays)
-      setUsers(usersResponse.data)
-      setContent(contentResponse.data)
-      setInteractions(interactionsResponse.data)
-      setServerStatus(serverResponse.data)
-    } catch (requestError) {
-      if (axios.isAxiosError(requestError)) {
+      const cfg = { headers: { "Content-Type": "application/json" } }
+      const n = Number(d)
+      const [uRes, cRes, iRes, sRes] = await Promise.all([
+        axios.get<UsersResponse>(`${apiBase}/admin/about/users`, { ...cfg, params: { days: n } }),
+        axios.get<ContentResponse>(`${apiBase}/admin/about/content`, { ...cfg, params: { days: n } }),
+        axios.get<InteractionsResponse>(`${apiBase}/admin/about/interactions`, { ...cfg, params: { days: n } }),
+        axios.get<ServerStatusResponse>(`${apiBase}/admin/about/server-status`, cfg),
+      ])
+      window.localStorage.setItem(API_DAYS_KEY, d)
+      setDays(d)
+      setUsers(uRes.data)
+      setContent(cRes.data)
+      setInteractions(iRes.data)
+      setServerStatus(sRes.data)
+      setLastRefreshed(new Date())
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
         setError({
-          status: requestError.response?.status,
-          message:
-            requestError.response?.data?.message ||
-            requestError.message ||
-            "Unable to fetch status data.",
+          status: err.response?.status,
+          message: err.response?.data?.message || err.message || "Unable to fetch status data.",
         })
       } else {
-        setError({
-          message: "Unable to fetch status data.",
-        })
+        setError({ message: "Unable to fetch status data." })
       }
     } finally {
       setLoading(false)
     }
   }
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    await fetchStatusData()
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    await fetchAll()
   }
 
   return (
@@ -236,17 +169,19 @@ export default function Status() {
           <HeroText>
             <h1>Daykeeper Status</h1>
             <p>
-              Public analytics for users, content, interactions, and current
-              server health.
+              Server health, user growth, content activity, and interaction
+              metrics — updated on demand.
             </p>
           </HeroText>
         </Hero>
 
+        {/* Controls */}
         <Panel as="form" onSubmit={handleSubmit}>
           <ControlsRow>
             <Select
               value={days}
-              onChange={(event) => setDays(event.target.value)}
+              onChange={(e) => setDays(e.target.value)}
+              disabled={loading}
             >
               <option value="7">Last 7 days</option>
               <option value="30">Last 30 days</option>
@@ -255,21 +190,26 @@ export default function Status() {
               <option value="365">Last 365 days</option>
             </Select>
             <button type="submit" disabled={loading}>
-              {loading ? "Refreshing..." : "Refresh status"}
+              {loading ? "Loading…" : "Refresh"}
             </button>
+            {lastRefreshed && (
+              <span style={{ fontSize: "0.9rem", color: "var(--dk-slate)" }}>
+                Updated {lastRefreshed.toLocaleTimeString()}
+              </span>
+            )}
           </ControlsRow>
         </Panel>
 
         {error && (
           <Banner>
-            <strong>{error.status ? `${error.status}` : "Error"}.</strong>{" "}
-            {error.message}
+            <strong>{error.status ?? "Error"}.</strong> {error.message}
           </Banner>
         )}
 
+        {/* ── Server Health ─────────────────────────────────────────────── */}
         <Section>
           <SectionHeader>
-            <h2>Server Health</h2>
+            <h2>Server health</h2>
             {serverStatus && (
               <StatusHeader>
                 <StatusDot $status={serverStatus.status} />
@@ -280,7 +220,12 @@ export default function Status() {
 
           {serverStatus ? (
             <PanelGrid>
+              {/* Key stats */}
               <StatGrid>
+                <StatCard>
+                  <label>Status</label>
+                  <StatValue>{serverStatus.status}</StatValue>
+                </StatCard>
                 <StatCard>
                   <label>Environment</label>
                   <StatValue>{serverStatus.environment}</StatValue>
@@ -293,21 +238,19 @@ export default function Status() {
                   <label>Database</label>
                   <StatValue>{serverStatus.database.status}</StatValue>
                 </StatCard>
-                <StatCard>
-                  <label>Timestamp</label>
-                  <StatValue>{formatDateTime(serverStatus.timestamp)}</StatValue>
-                </StatCard>
               </StatGrid>
 
+              {/* Detail panels */}
               <DetailGrid>
                 <Panel>
                   <h3>Database</h3>
                   <DetailList>
-                    <li>Ready state: {serverStatus.database.readyState}</li>
-                    <li>Host: {serverStatus.database.host ?? "unknown"}</li>
-                    <li>Name: {serverStatus.database.name ?? "unknown"}</li>
+                    <li>State: {serverStatus.database.readyState} ({serverStatus.database.status})</li>
+                    <li>Host: {serverStatus.database.host ?? "—"}</li>
+                    <li>Name: {serverStatus.database.name ?? "—"}</li>
                   </DetailList>
                 </Panel>
+
                 <Panel>
                   <h3>System</h3>
                   <DetailList>
@@ -317,48 +260,77 @@ export default function Status() {
                     <li>PID: {serverStatus.system.pid}</li>
                   </DetailList>
                 </Panel>
+
                 <Panel>
-                  <ChartHeader>
-                    <h3>Memory usage</h3>
-                    <span>{formatBytes(serverStatus.memory.heapUsed)}</span>
-                  </ChartHeader>
-                  <MultiLineChart
-                    labels={["rss", "heapTotal", "heapUsed", "external"]}
-                    series={[
-                      {
-                        label: "memory",
-                        color: "var(--dk-sky)",
-                        values: [
-                          serverStatus.memory.rss,
-                          serverStatus.memory.heapTotal,
-                          serverStatus.memory.heapUsed,
-                          serverStatus.memory.external,
-                        ],
-                      },
-                    ]}
-                    showLegend={false}
-                  />
+                  <h3>Memory</h3>
+                  <StatGrid>
+                    <StatCard>
+                      <label>Heap used</label>
+                      <StatValue style={{ fontSize: "1.1rem" }}>
+                        {formatBytes(serverStatus.memory.heapUsed)}
+                      </StatValue>
+                    </StatCard>
+                    <StatCard>
+                      <label>Heap total</label>
+                      <StatValue style={{ fontSize: "1.1rem" }}>
+                        {formatBytes(serverStatus.memory.heapTotal)}
+                      </StatValue>
+                    </StatCard>
+                    <StatCard>
+                      <label>RSS</label>
+                      <StatValue style={{ fontSize: "1.1rem" }}>
+                        {formatBytes(serverStatus.memory.rss)}
+                      </StatValue>
+                    </StatCard>
+                    <StatCard>
+                      <label>External</label>
+                      <StatValue style={{ fontSize: "1.1rem" }}>
+                        {formatBytes(serverStatus.memory.external)}
+                      </StatValue>
+                    </StatCard>
+                  </StatGrid>
                 </Panel>
               </DetailGrid>
             </PanelGrid>
           ) : (
             <Panel>
-              <p>Status data will load automatically when the page opens.</p>
+              <p>{loading ? "Loading server status…" : "No data loaded yet."}</p>
             </Panel>
           )}
         </Section>
 
+        {/* ── Users ─────────────────────────────────────────────────────── */}
         <Section>
           <SectionHeader>
             <h2>Users</h2>
             <ChartMeta>{formatRange(users?.range)}</ChartMeta>
           </SectionHeader>
+
           {users ? (
             <AnalyticsGrid>
+              <StatGrid>
+                <StatCard>
+                  <label>New registrations</label>
+                  <StatValue>{users.totals.users.toLocaleString()}</StatValue>
+                </StatCard>
+                <StatCard>
+                  <label>Daily average</label>
+                  <StatValue>
+                    {users.range.days > 0
+                      ? (users.totals.users / users.range.days).toFixed(1)
+                      : "—"}
+                  </StatValue>
+                </StatCard>
+              </StatGrid>
+
               <Panel>
                 <ChartHeader>
-                  <h3>New users</h3>
-                  <span>{activeUsersPoint?.value ?? users.totals.users}</span>
+                  <h3>New registrations</h3>
+                  <span>
+                    {activeUsersIdx !== null
+                      ? users.series[activeUsersIdx]?.count
+                      : users.totals.users}
+                  </span>
                 </ChartHeader>
                 <SingleLineChart
                   data={users.series.map((item) => ({
@@ -366,28 +338,53 @@ export default function Status() {
                     value: item.count,
                   }))}
                   color="var(--dk-sky)"
-                  onHoverChange={setActiveUsersPoint}
+                  onHoverChange={(pt) =>
+                    setActiveUsersIdx(
+                      pt ? users.series.findIndex((s) => s.bucket === pt.label) : null
+                    )
+                  }
                 />
               </Panel>
             </AnalyticsGrid>
           ) : (
-            <ChartEmpty>No user analytics loaded yet.</ChartEmpty>
+            <ChartEmpty>{loading ? "Loading…" : "No data loaded yet."}</ChartEmpty>
           )}
         </Section>
 
+        {/* ── Content ───────────────────────────────────────────────────── */}
         <Section>
           <SectionHeader>
             <h2>Content</h2>
             <ChartMeta>{formatRange(content?.range)}</ChartMeta>
           </SectionHeader>
+
           {content ? (
             <AnalyticsGrid>
+              <StatGrid>
+                <StatCard>
+                  <label>Day pages</label>
+                  <StatValue>{content.totals.dayPages.toLocaleString()}</StatValue>
+                </StatCard>
+                <StatCard>
+                  <label>Tasks</label>
+                  <StatValue>{content.totals.tasks.toLocaleString()}</StatValue>
+                </StatCard>
+                <StatCard>
+                  <label>Events</label>
+                  <StatValue>{content.totals.events.toLocaleString()}</StatValue>
+                </StatCard>
+                <StatCard>
+                  <label>Posts</label>
+                  <StatValue>{content.totals.posts.toLocaleString()}</StatValue>
+                </StatCard>
+              </StatGrid>
+
               <Panel>
                 <ChartHeader>
                   <h3>Content activity</h3>
                   <span>
-                    {activeContentIndex !== null
-                      ? content.series[activeContentIndex]?.total
+                    {activeContentIdx !== null
+                      ? content.series[activeContentIdx]?.total
                       : content.totals.total}
                   </span>
                 </ChartHeader>
@@ -395,19 +392,9 @@ export default function Status() {
                   labels={content.series.map((item) => item.bucket)}
                   series={[
                     {
-                      label: "total",
-                      color: "var(--dk-ink)",
-                      values: content.series.map((item) => item.total),
-                    },
-                    {
                       label: "day pages",
                       color: "var(--dk-sky)",
                       values: content.series.map((item) => item.dayPages),
-                    },
-                    {
-                      label: "posts",
-                      color: "var(--dk-slate)",
-                      values: content.series.map((item) => item.posts),
                     },
                     {
                       label: "tasks",
@@ -416,43 +403,64 @@ export default function Status() {
                     },
                     {
                       label: "events",
-                      color: "var(--dk-warning, #f59e0b)",
+                      color: "var(--dk-slate)",
                       values: content.series.map((item) => item.events),
                     },
+                    {
+                      label: "posts (legacy)",
+                      color: "var(--dk-ink)",
+                      values: content.series.map((item) => item.posts),
+                    },
                   ]}
-                  onHoverChange={setActiveContentIndex}
+                  onHoverChange={setActiveContentIdx}
                 />
               </Panel>
             </AnalyticsGrid>
           ) : (
-            <ChartEmpty>No content analytics loaded yet.</ChartEmpty>
+            <ChartEmpty>{loading ? "Loading…" : "No data loaded yet."}</ChartEmpty>
           )}
         </Section>
 
+        {/* ── Interactions ──────────────────────────────────────────────── */}
         <Section>
           <SectionHeader>
             <h2>Interactions</h2>
             <ChartMeta>{formatRange(interactions?.range)}</ChartMeta>
           </SectionHeader>
+
           {interactions ? (
             <AnalyticsGrid>
+              <StatGrid>
+                <StatCard>
+                  <label>Day page likes</label>
+                  <StatValue>{interactions.totals.dayPageLikes.toLocaleString()}</StatValue>
+                </StatCard>
+                <StatCard>
+                  <label>Day page comments</label>
+                  <StatValue>{interactions.totals.dayPageComments.toLocaleString()}</StatValue>
+                </StatCard>
+                <StatCard>
+                  <label>Post comments</label>
+                  <StatValue>{interactions.totals.comments.toLocaleString()}</StatValue>
+                </StatCard>
+                <StatCard>
+                  <label>Post likes</label>
+                  <StatValue>{interactions.totals.postLikes.toLocaleString()}</StatValue>
+                </StatCard>
+              </StatGrid>
+
               <Panel>
                 <ChartHeader>
                   <h3>Interaction activity</h3>
                   <span>
-                    {activeInteractionsIndex !== null
-                      ? interactions.series[activeInteractionsIndex]?.total
+                    {activeInteractionsIdx !== null
+                      ? interactions.series[activeInteractionsIdx]?.total
                       : interactions.totals.total}
                   </span>
                 </ChartHeader>
                 <MultiLineChart
                   labels={interactions.series.map((item) => item.bucket)}
                   series={[
-                    {
-                      label: "total",
-                      color: "var(--dk-ink)",
-                      values: interactions.series.map((item) => item.total),
-                    },
                     {
                       label: "day page likes",
                       color: "var(--dk-sky)",
@@ -464,27 +472,22 @@ export default function Status() {
                       values: interactions.series.map((item) => item.dayPageComments),
                     },
                     {
-                      label: "comments",
+                      label: "post comments",
                       color: "var(--dk-slate)",
                       values: interactions.series.map((item) => item.comments),
                     },
                     {
                       label: "post likes",
-                      color: "var(--dk-error)",
+                      color: "var(--dk-ink)",
                       values: interactions.series.map((item) => item.postLikes),
                     },
-                    {
-                      label: "comment likes",
-                      color: "var(--dk-warning, #f59e0b)",
-                      values: interactions.series.map((item) => item.commentLikes),
-                    },
                   ]}
-                  onHoverChange={setActiveInteractionsIndex}
+                  onHoverChange={setActiveInteractionsIdx}
                 />
               </Panel>
             </AnalyticsGrid>
           ) : (
-            <ChartEmpty>No interaction analytics loaded yet.</ChartEmpty>
+            <ChartEmpty>{loading ? "Loading…" : "No data loaded yet."}</ChartEmpty>
           )}
         </Section>
       </Dashboard>
@@ -492,96 +495,83 @@ export default function Status() {
   )
 }
 
+// ─── Charts ───────────────────────────────────────────────────────────────────
+
 function SingleLineChart({
   data,
   color,
   onHoverChange,
 }: {
-  data: LineChartDatum[]
+  data: LinePoint[]
   color: string
-  onHoverChange?: (point: LineChartDatum | null) => void
+  onHoverChange?: (point: LinePoint | null) => void
 }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
-
-  if (!data.length) {
-    return <ChartEmpty>No data returned for this range.</ChartEmpty>
-  }
-
-  const width = 760
-  const height = 240
-  const padding = 20
-  const maxValue = Math.max(...data.map((point) => point.value), 1)
-
-  const pointData = data.map((point, index) => {
-    const x =
-      data.length === 1
-        ? width / 2
-        : padding + (index / (data.length - 1)) * (width - padding * 2)
-    const y =
-      height - padding - (point.value / maxValue) * (height - padding * 2)
-
-    return { x, y, label: point.label, value: point.value }
-  })
-
-  const activePoint =
-    activeIndex !== null ? pointData[activeIndex] : pointData[pointData.length - 1]
+  const prevActiveRef = useRef<number | null>(null)
 
   useEffect(() => {
-    onHoverChange?.(
-      activeIndex !== null
-        ? { label: activePoint.label, value: activePoint.value }
-        : null
-    )
-  }, [activeIndex, activePoint.label, activePoint.value, onHoverChange])
+    if (activeIndex === prevActiveRef.current) return
+    prevActiveRef.current = activeIndex
+    onHoverChange?.(activeIndex !== null ? data[activeIndex] : null)
+  }, [activeIndex, data, onHoverChange])
+
+  if (!data.length) {
+    return <ChartEmpty>No data for this range.</ChartEmpty>
+  }
+
+  const W = 760
+  const H = 220
+  const PAD = 20
+  const maxVal = Math.max(...data.map((d) => d.value), 1)
+
+  const pts = data.map((d, i) => ({
+    x: data.length === 1 ? W / 2 : PAD + (i / (data.length - 1)) * (W - PAD * 2),
+    y: H - PAD - (d.value / maxVal) * (H - PAD * 2),
+    ...d,
+  }))
+
+  const resolvedIdx = activeIndex ?? pts.length - 1
+  const active = pts[resolvedIdx]
 
   return (
     <>
-      <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none">
+      <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none">
         <line
-          x1={activePoint.x}
-          x2={activePoint.x}
-          y1={padding}
-          y2={height - padding}
-          stroke="rgba(51, 65, 85, 0.35)"
-          strokeWidth="1"
-          strokeDasharray="4 6"
+          x1={active.x} x2={active.x} y1={PAD} y2={H - PAD}
+          stroke="rgba(51,65,85,0.3)" strokeWidth="1" strokeDasharray="4 5"
         />
         <polyline
-          fill="none"
-          stroke={color}
-          strokeWidth="3"
-          points={pointData.map((point) => `${point.x},${point.y}`).join(" ")}
+          fill="none" stroke={color} strokeWidth="2.5"
+          points={pts.map((p) => `${p.x},${p.y}`).join(" ")}
         />
-        {pointData.map((point, index) => (
-          <g key={point.label}>
+        {pts.map((p, i) => (
+          <g key={p.label}>
             <circle
-              cx={point.x}
-              cy={point.y}
-              r={(activeIndex ?? pointData.length - 1) === index ? 5 : 0}
+              cx={p.x} cy={p.y}
+              r={resolvedIdx === i ? 4.5 : 0}
               fill={color}
             />
             <rect
-              x={index === 0 ? 0 : (pointData[index - 1].x + point.x) / 2}
-              y="0"
+              x={i === 0 ? 0 : (pts[i - 1].x + p.x) / 2}
+              y={0}
               width={
-                index === pointData.length - 1
-                  ? width - (index === 0 ? 0 : (pointData[index - 1].x + point.x) / 2)
-                  : ((point.x + pointData[index + 1].x) / 2) -
-                    (index === 0 ? 0 : (pointData[index - 1].x + point.x) / 2)
+                i === pts.length - 1
+                  ? W - (i === 0 ? 0 : (pts[i - 1].x + p.x) / 2)
+                  : (p.x + pts[i + 1].x) / 2 - (i === 0 ? 0 : (pts[i - 1].x + p.x) / 2)
               }
-              height={height}
+              height={H}
               fill="transparent"
-              onMouseEnter={() => setActiveIndex(index)}
+              onMouseEnter={() => setActiveIndex(i)}
               onMouseLeave={() => setActiveIndex(null)}
             />
           </g>
         ))}
       </svg>
       <ChartMeta>
-        {formatBucketDate(activePoint.label)}: {activePoint.value}
+        {formatBucketDate(active.label)}: {active.value}
       </ChartMeta>
       <ChartMeta>
-        {formatBucketDate(data[0]?.label)} to {formatBucketDate(data[data.length - 1]?.label)}
+        {formatBucketDate(data[0]?.label)} – {formatBucketDate(data[data.length - 1]?.label)}
       </ChartMeta>
     </>
   )
@@ -590,212 +580,133 @@ function SingleLineChart({
 function MultiLineChart({
   labels,
   series,
-  showLegend = true,
   onHoverChange,
 }: {
   labels: string[]
-  series: MultiLineChartSeries[]
-  showLegend?: boolean
+  series: ChartSeries[]
   onHoverChange?: (index: number | null) => void
 }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
+  const prevActiveRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    if (activeIndex === prevActiveRef.current) return
+    prevActiveRef.current = activeIndex
+    onHoverChange?.(activeIndex)
+  }, [activeIndex, onHoverChange])
 
   if (!labels.length || !series.length) {
-    return <ChartEmpty>No data returned for this range.</ChartEmpty>
+    return <ChartEmpty>No data for this range.</ChartEmpty>
   }
 
-  const width = 760
-  const height = 260
-  const padding = 20
-  const maxValue = Math.max(...series.flatMap((item) => item.values), 1)
+  const W = 760
+  const H = 240
+  const PAD = 20
+  const maxVal = Math.max(...series.flatMap((s) => s.values), 1)
 
   const buildPoints = (values: number[]) =>
     values
-      .map((value, index) => {
+      .map((v, i) => {
         const x =
-          values.length === 1
-            ? width / 2
-            : padding + (index / (values.length - 1)) * (width - padding * 2)
-        const y =
-          height - padding - (value / maxValue) * (height - padding * 2)
-
+          values.length === 1 ? W / 2 : PAD + (i / (values.length - 1)) * (W - PAD * 2)
+        const y = H - PAD - (v / maxVal) * (H - PAD * 2)
         return `${x},${y}`
       })
       .join(" ")
 
-  const resolvedIndex = activeIndex ?? labels.length - 1
-  const activeLines = series.map((line) => {
-    const value = line.values[resolvedIndex]
-    const x =
-      labels.length === 1
-        ? width / 2
-        : padding + (resolvedIndex / (labels.length - 1)) * (width - padding * 2)
-    const y =
-      height - padding - (value / maxValue) * (height - padding * 2)
+  const resolvedIdx = activeIndex ?? labels.length - 1
 
-    return {
-      ...line,
-      value,
-      x,
-      y,
-    }
-  })
-
-  useEffect(() => {
-    onHoverChange?.(activeIndex)
-  }, [activeIndex, onHoverChange])
+  const activeX =
+    labels.length === 1 ? W / 2 : PAD + (resolvedIdx / (labels.length - 1)) * (W - PAD * 2)
 
   return (
     <>
-      <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none">
+      <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none">
         <line
-          x1={activeLines[0].x}
-          x2={activeLines[0].x}
-          y1={padding}
-          y2={height - padding}
-          stroke="rgba(51, 65, 85, 0.35)"
-          strokeWidth="1"
-          strokeDasharray="4 6"
+          x1={activeX} x2={activeX} y1={PAD} y2={H - PAD}
+          stroke="rgba(51,65,85,0.3)" strokeWidth="1" strokeDasharray="4 5"
         />
         {series.map((line) => (
           <polyline
             key={line.label}
             fill="none"
             stroke={line.color}
-            strokeWidth="3"
+            strokeWidth="2.5"
             points={buildPoints(line.values)}
           />
         ))}
-        {labels.map((label, index) => {
+        {labels.map((label, i) => {
           const x =
-            labels.length === 1
-              ? width / 2
-              : padding + (index / (labels.length - 1)) * (width - padding * 2)
-
+            labels.length === 1 ? W / 2 : PAD + (i / (labels.length - 1)) * (W - PAD * 2)
           return (
             <g key={label}>
               {series.map((line) => {
-                const value = line.values[index]
-                const y =
-                  height - padding - (value / maxValue) * (height - padding * 2)
-
+                const v = line.values[i]
+                const y = H - PAD - (v / maxVal) * (H - PAD * 2)
                 return (
                   <circle
-                    key={`${label}-${line.label}`}
-                    cx={x}
-                    cy={y}
-                    r={resolvedIndex === index ? 4 : 0}
+                    key={line.label}
+                    cx={x} cy={y}
+                    r={resolvedIdx === i ? 4 : 0}
                     fill={line.color}
                   />
                 )
               })}
               <rect
-                x={
-                  index === 0
-                    ? 0
-                    : (x +
-                        (labels.length === 1
-                          ? width / 2
-                          : padding +
-                            ((index - 1) / (labels.length - 1)) *
-                              (width - padding * 2))) /
-                      2
-                }
-                y="0"
+                x={i === 0 ? 0 : (x + (PAD + ((i - 1) / (labels.length - 1)) * (W - PAD * 2))) / 2}
+                y={0}
                 width={
-                  index === labels.length - 1
-                    ? width -
-                      (index === 0
-                        ? 0
-                        : (x +
-                            (labels.length === 1
-                              ? width / 2
-                              : padding +
-                                ((index - 1) / (labels.length - 1)) *
-                                  (width - padding * 2))) /
-                          2)
-                    : ((x +
-                        (labels.length === 1
-                          ? width / 2
-                          : padding +
-                            ((index + 1) / (labels.length - 1)) *
-                              (width - padding * 2))) /
-                        2) -
-                      (index === 0
-                        ? 0
-                        : (x +
-                            (labels.length === 1
-                              ? width / 2
-                              : padding +
-                                ((index - 1) / (labels.length - 1)) *
-                                  (width - padding * 2))) /
-                          2)
+                  i === labels.length - 1
+                    ? W - (i === 0 ? 0 : (x + (PAD + ((i - 1) / (labels.length - 1)) * (W - PAD * 2))) / 2)
+                    : (x + (PAD + ((i + 1) / (labels.length - 1)) * (W - PAD * 2))) / 2 -
+                      (i === 0 ? 0 : (x + (PAD + ((i - 1) / (labels.length - 1)) * (W - PAD * 2))) / 2)
                 }
-                height={height}
+                height={H}
                 fill="transparent"
-                onMouseEnter={() => setActiveIndex(index)}
+                onMouseEnter={() => setActiveIndex(i)}
                 onMouseLeave={() => setActiveIndex(null)}
               />
             </g>
           )
         })}
       </svg>
-      {showLegend && (
-        <ChartLegend>
-          {series.map((line) => (
-            <ChartLegendItem key={line.label}>
-              <span style={{ backgroundColor: line.color }} />
-              <label>{line.label}</label>
-            </ChartLegendItem>
-          ))}
-        </ChartLegend>
-      )}
+      <ChartLegend>
+        {series.map((line) => (
+          <ChartLegendItem key={line.label}>
+            <span style={{ backgroundColor: line.color }} />
+            <label>{line.label}</label>
+          </ChartLegendItem>
+        ))}
+      </ChartLegend>
       <ChartMeta>
-        {formatBucketDate(labels[resolvedIndex])}:{" "}
-        {series.map((line) => `${line.label} ${line.values[resolvedIndex]}`).join(" | ")}
+        {formatBucketDate(labels[resolvedIdx])}:{" "}
+        {series.map((l) => `${l.label} ${l.values[resolvedIdx]}`).join("  ·  ")}
       </ChartMeta>
       <ChartMeta>
-        {formatBucketDate(labels[0])} to {formatBucketDate(labels[labels.length - 1])}
+        {formatBucketDate(labels[0])} – {formatBucketDate(labels[labels.length - 1])}
       </ChartMeta>
     </>
   )
 }
 
-function formatBytes(value: number) {
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function formatBytes(n: number) {
   const units = ["B", "KB", "MB", "GB"]
-  let size = value
-  let unitIndex = 0
-
-  while (size >= 1024 && unitIndex < units.length - 1) {
-    size /= 1024
-    unitIndex += 1
-  }
-
-  return `${size.toFixed(size >= 10 ? 0 : 1)} ${units[unitIndex]}`
-}
-
-function formatDateTime(value: string) {
-  return new Date(value).toLocaleString()
+  let size = n
+  let i = 0
+  while (size >= 1024 && i < units.length - 1) { size /= 1024; i++ }
+  return `${size.toFixed(size >= 10 ? 0 : 1)} ${units[i]}`
 }
 
 function formatRange(range?: Range) {
-  if (!range) {
-    return "No range loaded"
-  }
-
-  return `${range.days} days, ${range.timezone}`
+  if (!range) return ""
+  return `${range.days}d · UTC`
 }
 
 function formatBucketDate(value?: string) {
-  if (!value) {
-    return ""
-  }
-
-  const [year, month, day] = value.split("-")
-
-  if (!year || !month || !day) {
-    return value
-  }
-
-  return `${day}/${month}/${year}`
+  if (!value) return ""
+  const [y, m, d] = value.split("-")
+  if (!y || !m || !d) return value
+  return `${d}/${m}/${y}`
 }
