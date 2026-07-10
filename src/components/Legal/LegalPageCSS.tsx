@@ -3,75 +3,71 @@ import styled from "styled-components"
 export const Page = styled.div`
   width: 100%;
   min-height: 100vh;
-  padding: 7rem 1.25rem 4rem;
+  padding: calc(4.25rem + clamp(2.5rem, 6vw, 4.5rem)) 0 clamp(3rem, 7vw, 5rem);
   background: var(--dk-paper);
 `
 
 export const Wrapper = styled.div`
-  width: min(960px, 100%);
-  margin: 0 auto;
+  max-width: var(--container-narrow);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: var(--space-8);
 `
 
 export const Hero = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-4);
+  padding-bottom: var(--space-8);
+  border-bottom: var(--border-soft);
 
   h1 {
-    margin: 0;
-    font-size: clamp(2.4rem, 6vw, 4rem);
-    line-height: 1;
-    color: var(--dk-ink);
+    font-size: var(--text-4xl);
   }
 
   p {
-    margin: 0;
-    color: var(--dk-slate);
-    font-size: 1.05rem;
-    line-height: 1.65;
-    max-width: 44rem;
+    font-size: var(--text-base);
+    line-height: 1.7;
   }
 `
 
 export const Meta = styled.div`
-  color: var(--dk-slate);
-  font-size: 0.95rem;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--dk-sky-deep);
 `
 
 export const Section = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid rgba(116, 185, 255, 0.18);
+  gap: var(--space-3);
 
   h2 {
-    margin: 0;
-    font-size: 1.45rem;
-    color: var(--dk-ink);
+    font-size: var(--text-xl);
+    padding-top: var(--space-4);
   }
 
   p {
-    margin: 0;
-    color: var(--dk-slate);
     line-height: 1.75;
   }
 
   ul {
     margin: 0;
-    padding-left: 1.1rem;
-    color: var(--dk-slate);
+    padding-left: 1.25rem;
   }
 
   li {
-    margin-bottom: 0.55rem;
+    margin-bottom: var(--space-2);
     line-height: 1.7;
+
+    &::marker {
+      color: var(--dk-sky);
+    }
   }
 
   a {
-    color: var(--dk-sky);
+    font-weight: 600;
   }
 `

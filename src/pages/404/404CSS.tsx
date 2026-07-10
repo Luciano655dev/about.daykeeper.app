@@ -65,7 +65,8 @@ export const StatusPill = styled.span`
 
 export const VisualCode = styled.p`
   margin: 0;
-  font-family: "Rota_ExtraBold";
+  font-family: var(--font-display);
+  font-weight: 800;
   font-size: clamp(5rem, 18vw, 10rem);
   line-height: 0.9;
   letter-spacing: -0.08em;
@@ -74,11 +75,12 @@ export const VisualCode = styled.p`
 
 export const Eyebrow = styled.p`
   margin: 0;
-  font-family: "Rota_Bold";
-  font-size: 1rem;
-  letter-spacing: 0.16em;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--dk-sky);
+  color: var(--dk-sky-deep);
 `
 
 export const Message = styled.p`
@@ -108,9 +110,9 @@ export const HomeButton = styled(Link)`
   padding: 0.95rem 1.35rem;
   border: 0;
   border-radius: 999px;
-  font-size: 1rem;
-  font-family: "Rota_Bold";
-  background: linear-gradient(135deg, #74b9ff 0%, #0f172a 180%);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  background: var(--dk-sky-deep);
   color: #ffffff;
   text-decoration: none;
   transition:

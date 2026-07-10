@@ -13,11 +13,14 @@ function Footer() {
       <OtherContainer>
         <FooterIntro>
           <a href="https://daykeeper.app" target="_blank" rel="noreferrer">
-            daykeeper.app
+            <img
+              src="/Logo/SVG/Daykeeper-Horizontal-Main.svg"
+              alt="Daykeeper"
+            />
           </a>
           <p>
-            Daykeeper is building a daily product around memory, planning, and
-            social accountability.
+            A journal that lives online — as social, or as private, as you
+            want it to be.
           </p>
         </FooterIntro>
 
@@ -30,16 +33,10 @@ function Footer() {
               </a>
             </li>
             <li>
-              <Link to="/status">Status Dashboard</Link>
+              <Link to="/open-source">Open Source</Link>
             </li>
             <li>
-              <Link to="/terms">Terms of Use</Link>
-            </li>
-            <li>
-              <Link to="/privacy">Privacy Policy</Link>
-            </li>
-            <li>
-              <Link to="/license">Code License</Link>
+              <Link to="/status">Status</Link>
             </li>
             <li>
               <a href="mailto:contact@daykeeper.app">contact@daykeeper.app</a>
@@ -48,7 +45,7 @@ function Footer() {
         </FooterSection>
 
         <FooterSection>
-          <label>Open Source</label>
+          <label>Code</label>
           <ul>
             <li>
               <a
@@ -81,8 +78,17 @@ function Footer() {
         </FooterSection>
 
         <FooterSection>
-          <label>Community</label>
+          <label>Legal</label>
           <ul>
+            <li>
+              <Link to="/terms">Terms of Use</Link>
+            </li>
+            <li>
+              <Link to="/privacy">Privacy Policy</Link>
+            </li>
+            <li>
+              <Link to="/license">Code License</Link>
+            </li>
             <li>
               <a
                 href="https://www.instagram.com/daykeeperapp"
@@ -92,26 +98,12 @@ function Footer() {
                 Instagram
               </a>
             </li>
-            <li>
-              <a
-                href="https://www.instagram.com/greenguruprojectbyshaanguru/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Green Guru Project
-              </a>
-            </li>
-            <li>
-              <a href="mailto:contact@daykeeper.app">
-                Collaboration Contact
-              </a>
-            </li>
           </ul>
         </FooterSection>
       </OtherContainer>
 
       <Copyright>
-        &copy; {new Date().getFullYear()} Daykeeper. Built around{" "}
+        &copy; {new Date().getFullYear()} Daykeeper. Made with care around{" "}
         <a href="https://daykeeper.app" target="_blank" rel="noreferrer">
           daykeeper.app
         </a>

@@ -1,29 +1,42 @@
 import { useEffect } from "react"
-import { useLocation } from "react-router-dom"
-import AOS from "aos"
+import { useLocation, Outlet } from "react-router-dom"
+import styled from "styled-components"
 import GlobalStyles from "./GlobalStyles"
 
 import Navbar from "./components/navbar/navbar"
-import { Outlet } from "react-router-dom"
 import Footer from "./components/Footer/Footer"
 
-import "aos/dist/aos.css"
+const SkipLink = styled.a`
+  position: absolute;
+  top: -100%;
+  left: var(--space-4);
+  z-index: 200;
+  background: var(--dk-paper);
+  color: var(--dk-ink);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-soft);
+  font-weight: 600;
+
+  &:focus {
+    top: var(--space-4);
+  }
+`
 
 function App() {
-  useEffect(() => {
-    AOS.init({ duration: 500, once: true })
-  }, [])
-
   return (
-    <body>
+    <>
       <ScrollToTop />
       <GlobalStyles />
+      <SkipLink href="#content">Skip to content</SkipLink>
       <Navbar />
 
-      <Outlet />
+      <main id="content">
+        <Outlet />
+      </main>
 
       <Footer />
-    </body>
+    </>
   )
 }
 

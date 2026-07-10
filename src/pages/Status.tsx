@@ -121,6 +121,7 @@ export default function Status() {
   useEffect(() => {
     const stored = window.localStorage.getItem(API_DAYS_KEY)
     void fetchAll(stored ?? "30")
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const fetchAll = async (daysOverride?: string) => {

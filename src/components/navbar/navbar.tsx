@@ -1,101 +1,80 @@
 import { useEffect, useState } from "react"
-import { Link, useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import {
-  NavbarContainer,
-  HamburguerMenu,
-  HamburguerMenuIcon,
-  NavbarLink,
-  NavbarAnchor,
-  HamburguerMenuLink,
-  HamburguerMenuAnchor,
+  Header,
+  Nav,
+  LogoLink,
+  NavLinks,
+  NavLink,
+  NavCta,
+  MenuButton,
+  MobileSheet,
+  MobileLink,
+  MobileCta,
 } from "./navbarCSS"
-import "./transitions.css"
 
 function Navbar() {
+  const [scrolled, setScrolled] = useState(false)
+  const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
-  const [isVisible, setIsVisible] = useState(false)
-  const [isMenuVisible, setIsMenuVisible] = useState(false)
-
-  const toggleMenu = () => {
-    setIsMenuVisible(!isMenuVisible)
-  }
 
   useEffect(() => {
-    if (
-      pathname === "/status" ||
-      pathname === "/terms" ||
-      pathname === "/privacy" ||
-      pathname === "/license"
-    ) {
-      setIsVisible(true)
-      return
-    }
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
 
-    const handleScroll = () => {
-      if (window.scrollY >= window.innerHeight - window.innerHeight * 0.5) {
-        setIsVisible(true)
-      } else {
-        setIsVisible(false)
-      }
-
-      if (window.innerWidth >= 800) {
-        setIsMenuVisible(false)
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll)
-
-    handleScroll()
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
+  useEffect(() => {
+    setOpen(false)
   }, [pathname])
 
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : ""
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [open])
+
   return (
-    <NavbarContainer className={isVisible ? "visible" : "hidden"}>
-      <div>
-        <Link to="/">
-          <img
-            src="/Logo/SVG/Daykeeper-Horizontal-Main.svg"
-            alt="DayKeeper Logo"
-          />
-        </Link>
-      </div>
+    <>
+      <Header $scrolled={scrolled}>
+        <Nav aria-label="Main">
+          <LogoLink to="/" aria-label="Daykeeper home">
+            <img src="/Logo/SVG/Daykeeper-Horizontal-Main.svg" alt="Daykeeper" />
+          </LogoLink>
 
-      <div className={`normal-items`}>
-        <NavbarLink to="/">Home</NavbarLink>
-        <NavbarAnchor href="/#sectionTwo">Overview</NavbarAnchor>
-        <NavbarAnchor href="/#sectionThree">Updates</NavbarAnchor>
-        <NavbarLink to="/status">Status</NavbarLink>
-        <NavbarLink to="/terms">Terms</NavbarLink>
-      </div>
+          <NavLinks>
+            <NavLink to="/open-source">Open Source</NavLink>
+            <NavLink to="/status">Status</NavLink>
+          </NavLinks>
 
-      <HamburguerMenuIcon
-        type="checkbox"
-        role="button"
-        aria-label="Display the menu"
-        checked={isMenuVisible}
-        onClick={toggleMenu}
-      />
-      <HamburguerMenu className={isMenuVisible ? "menuVisible" : "menuHidden"}>
-        <HamburguerMenuLink to="/" onClick={() => toggleMenu()}>
-          Home
-        </HamburguerMenuLink>
-        <HamburguerMenuAnchor href="/#sectionTwo" onClick={() => toggleMenu()}>
-          Overview
-        </HamburguerMenuAnchor>
-        <HamburguerMenuAnchor href="/#sectionThree" onClick={() => toggleMenu()}>
-          Updates
-        </HamburguerMenuAnchor>
-        <HamburguerMenuLink to="/status" onClick={() => toggleMenu()}>
-          Status
-        </HamburguerMenuLink>
-        <HamburguerMenuLink to="/terms" onClick={() => toggleMenu()}>
-          Terms
-        </HamburguerMenuLink>
-      </HamburguerMenu>
-    </NavbarContainer>
+          <NavCta href="https://daykeeper.app" target="_blank" rel="noreferrer">
+            Start your journal
+          </NavCta>
+
+          <MenuButton
+            $open={open}
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-label={open ? "Close menu" : "Open menu"}
+          >
+            <span />
+            <span />
+            <span />
+          </MenuButton>
+        </Nav>
+      </Header>
+
+      <MobileSheet $open={open} aria-hidden={!open}>
+        <MobileLink to="/">Home</MobileLink>
+        <MobileLink to="/open-source">Open Source</MobileLink>
+        <MobileLink to="/status">Status</MobileLink>
+        <MobileCta href="https://daykeeper.app" target="_blank" rel="noreferrer">
+          Start your journal
+        </MobileCta>
+      </MobileSheet>
+    </>
   )
 }
 
