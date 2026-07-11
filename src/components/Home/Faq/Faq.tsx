@@ -1,8 +1,7 @@
 import styled from "styled-components"
 import Container from "../../ui/Container"
 import Section from "../../ui/Section"
-import { Eyebrow, Heading } from "../../ui/Text"
-import Reveal from "../../ui/Reveal"
+import { Heading } from "../../ui/Text"
 
 const Intro = styled.div`
   text-align: center;
@@ -131,20 +130,15 @@ function Faq() {
     <Section>
       <Container>
         <Intro>
-          <Reveal>
-            <Eyebrow>Questions</Eyebrow>
-            <Heading data-align="center">Fair things to ask</Heading>
-          </Reveal>
+          <Heading data-align="center">Questions</Heading>
         </Intro>
 
         <List>
-          {faqs.map((f, i) => (
-            <Reveal key={f.q} delay={i * 60}>
-              <Item>
-                <summary>{f.q}</summary>
-                <p>{f.a}</p>
-              </Item>
-            </Reveal>
+          {faqs.map((f) => (
+            <Item key={f.q}>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </Item>
           ))}
         </List>
       </Container>

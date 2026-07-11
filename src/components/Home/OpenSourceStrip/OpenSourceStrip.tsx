@@ -1,11 +1,13 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 import Container from "../../ui/Container"
-import Section from "../../ui/Section"
-import { Eyebrow, Heading } from "../../ui/Text"
-import Reveal from "../../ui/Reveal"
 
-const Row = styled.div`
+const Wrap = styled.section`
+  padding-block: clamp(3rem, 7vw, 5rem);
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+`
+
+const Row = styled(Container)`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -18,12 +20,16 @@ const Row = styled.div`
 `
 
 const Copy = styled.div`
-  max-width: 46ch;
+  max-width: 48ch;
+
+  h2 {
+    font-size: var(--text-2xl);
+  }
 
   p {
     margin-top: var(--space-4);
-    font-size: var(--text-base);
     line-height: 1.65;
+    color: var(--dk-slate);
   }
 `
 
@@ -34,9 +40,6 @@ const Links = styled.div`
 `
 
 const StripLink = styled.a`
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
   font-size: var(--text-sm);
   font-weight: 600;
   color: var(--dk-ink);
@@ -53,39 +56,32 @@ const StripLink = styled.a`
 
 function OpenSourceStrip() {
   return (
-    <Section $compact>
-      <Container>
-        <Reveal>
-          <Row>
-            <Copy>
-              <Eyebrow>Built in the open</Eyebrow>
-              <Heading as="h2" style={{ fontSize: "var(--text-2xl)" }}>
-                Open source, with a public status page.
-              </Heading>
-              <p>
-                The API is MIT-licensed, development happens on GitHub, and the
-                platform&rsquo;s health is public. No black boxes.
-              </p>
-            </Copy>
-            <Links>
-              <StripLink
-                href="https://github.com/luciano655dev/daykeeper-api"
-                target="_blank"
-                rel="noreferrer"
-              >
-                GitHub
-              </StripLink>
-              <StripLink as={Link} to="/open-source">
-                Open Source
-              </StripLink>
-              <StripLink as={Link} to="/status">
-                Live Status
-              </StripLink>
-            </Links>
-          </Row>
-        </Reveal>
-      </Container>
-    </Section>
+    <Wrap>
+      <Row>
+        <Copy>
+          <h2>Built in the open.</h2>
+          <p>
+            The API is MIT-licensed, development happens on GitHub, and the
+            platform&rsquo;s health is public — no black boxes.
+          </p>
+        </Copy>
+        <Links>
+          <StripLink
+            href="https://github.com/luciano655dev/daykeeper-api"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub
+          </StripLink>
+          <StripLink as={Link} to="/open-source">
+            Open Source
+          </StripLink>
+          <StripLink as={Link} to="/status">
+            Live Status
+          </StripLink>
+        </Links>
+      </Row>
+    </Wrap>
   )
 }
 
