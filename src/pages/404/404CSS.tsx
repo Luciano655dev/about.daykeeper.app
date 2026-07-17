@@ -10,21 +10,7 @@ export const Container = styled.div`
   align-items: center;
   padding: 7rem 1.25rem 4rem;
   overflow: hidden;
-  background:
-    radial-gradient(circle at top left, rgba(116, 185, 255, 0.2), transparent 28rem),
-    linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
-`
-
-export const BackgroundGlow = styled.div`
-  position: absolute;
-  inset: auto auto 10% 50%;
-  width: min(70vw, 42rem);
-  height: min(70vw, 42rem);
-  transform: translateX(-50%);
-  border-radius: 999px;
-  background: radial-gradient(circle, rgba(15, 23, 42, 0.1), transparent 65%);
-  filter: blur(16px);
-  pointer-events: none;
+  background: #f5f9ff;
 `
 
 export const Panel = styled.div`
@@ -37,9 +23,7 @@ export const Panel = styled.div`
   padding: clamp(2rem, 4vw, 3rem);
   border: 1px solid rgba(116, 185, 255, 0.28);
   border-radius: 2rem;
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: 0 32px 80px rgba(15, 23, 42, 0.1);
-  backdrop-filter: blur(14px);
+  background: var(--dk-paper);
 
   h1 {
     margin: 0;
@@ -115,13 +99,10 @@ export const HomeButton = styled(Link)`
   background: var(--dk-sky-deep);
   color: #ffffff;
   text-decoration: none;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: background-color 0.2s ease;
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.18);
+    background: #318be7;
   }
 `
 

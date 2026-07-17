@@ -59,10 +59,10 @@ function OpenSourceStrip() {
     <Wrap>
       <Row>
         <Copy>
-          <h2>Built in the open.</h2>
+          <h2>Check the work.</h2>
           <p>
-            The API is MIT-licensed, development happens on GitHub, and the
-            platform&rsquo;s health is public — no black boxes.
+            The API is MIT-licensed. Source code, API documentation, service
+            health, and response data are available from the links here.
           </p>
         </Copy>
         <Links>

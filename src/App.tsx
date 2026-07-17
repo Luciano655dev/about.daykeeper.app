@@ -15,7 +15,7 @@ const SkipLink = styled.a`
   color: var(--dk-ink);
   padding: var(--space-3) var(--space-6);
   border-radius: var(--radius-full);
-  box-shadow: var(--shadow-soft);
+  border: var(--border-soft);
   font-weight: 600;
 
   &:focus {

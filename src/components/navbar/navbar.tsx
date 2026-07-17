@@ -50,7 +50,7 @@ function Navbar() {
           </NavLinks>
 
           <NavCta href="https://daykeeper.app" target="_blank" rel="noreferrer">
-            Start your journal
+            Open Daykeeper
           </NavCta>
 
           <MenuButton
@@ -71,7 +71,7 @@ function Navbar() {
         <MobileLink to="/open-source">Open Source</MobileLink>
         <MobileLink to="/status">Status</MobileLink>
         <MobileCta href="https://daykeeper.app" target="_blank" rel="noreferrer">
-          Start your journal
+          Open Daykeeper
         </MobileCta>
       </MobileSheet>
     </>

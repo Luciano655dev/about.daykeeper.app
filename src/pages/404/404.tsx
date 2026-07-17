@@ -1,5 +1,4 @@
 import {
-  BackgroundGlow,
   Container,
   Eyebrow,
   HomeButton,
@@ -14,7 +13,6 @@ import {
 export default function Page404() {
   return (
     <Container>
-      <BackgroundGlow aria-hidden="true" />
       <Panel>
         <StatusPill>404 error</StatusPill>
         <VisualCode>404</VisualCode>

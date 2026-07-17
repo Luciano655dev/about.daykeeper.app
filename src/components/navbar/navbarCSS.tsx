@@ -7,9 +7,7 @@ export const Header = styled.header<{ $scrolled: boolean }>`
   left: 0;
   right: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--dk-paper);
   border-bottom: 1px solid
     ${({ $scrolled }) => ($scrolled ? "rgba(15, 23, 42, 0.08)" : "transparent")};
   transition: border-color 0.3s var(--ease-out);
@@ -69,11 +67,10 @@ export const NavCta = styled.a`
   background: var(--dk-sky-deep);
   padding: 0.625rem 1.25rem;
   border-radius: var(--radius-full);
-  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+  transition: background-color 0.2s var(--ease-out);
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 20px -8px rgba(74, 158, 245, 0.6);
+    background: #318be7;
   }
 
   @media (max-width: 720px) {

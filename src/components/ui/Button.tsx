@@ -15,12 +15,9 @@ const base = css`
   cursor: pointer;
   text-decoration: none;
   white-space: nowrap;
-  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out),
-    background-color 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+  transition: background-color 0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out);
 
-  &:active {
-    transform: translateY(1px);
-  }
 `
 
 export const PrimaryButton = styled.a`
@@ -29,8 +26,7 @@ export const PrimaryButton = styled.a`
   color: #ffffff;
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 20px -8px rgba(74, 158, 245, 0.6);
+    background: #318be7;
   }
 `
 

@@ -58,10 +58,10 @@ const List = styled.dl`
 `
 
 const items = [
-  ["Two-factor authentication", "Codes by email or an authenticator app — your choice."],
-  ["Sign in with Google", "One tap in, nothing extra to remember."],
-  ["Device management", "See what's signed in, and sign out anything you don't recognize."],
-  ["Screened media", "Uploads are checked automatically, so the space stays safe."],
+  ["Two-factor authentication", "Use email codes or an authenticator app."],
+  ["Sign in with Google", "Use your Google account without another password."],
+  ["Device management", "Review active sessions and revoke any device you do not recognize."],
+  ["Screened media", "Photos and videos pass automated safety checks before they are shared."],
 ]
 
 function Security() {
@@ -69,10 +69,11 @@ function Security() {
     <Wrap>
       <Layout>
         <Lead>
-          <h2>Your journal is yours.</h2>
+          <h2>Private means private.</h2>
           <p>
-            A diary holds things you wouldn&rsquo;t say out loud. Daykeeper is
-            built with the security a private space deserves.
+            Visibility is set per page. Account controls include two-factor
+            authentication and device sessions, while uploads pass through
+            automated media checks.
           </p>
         </Lead>
         <List>

@@ -40,38 +40,34 @@ type Range = {
 type UsersResponse = {
   message: string
   range: Range
-  totals: { users: number }
-  series: Array<{ bucket: string; count: number }>
+  totals: { users?: number }
+  series: Array<{ bucket: string; count?: number }>
 }
 
 type ContentResponse = {
   message: string
   range: Range
-  totals: { total: number; posts: number; dayPages: number; tasks: number; events: number }
-  series: Array<{ bucket: string; total: number; posts: number; dayPages: number; tasks: number; events: number }>
+  totals: { total?: number; posts?: number; tasks?: number; events?: number }
+  series: Array<{ bucket: string; total?: number; posts?: number; tasks?: number; events?: number }>
 }
 
 type InteractionsResponse = {
   message: string
   range: Range
   totals: {
-    total: number
-    comments: number
-    likes: number
-    postLikes: number
-    commentLikes: number
-    dayPageComments: number
-    dayPageLikes: number
+    total?: number
+    comments?: number
+    likes?: number
+    postLikes?: number
+    commentLikes?: number
   }
   series: Array<{
     bucket: string
-    total: number
-    comments: number
-    likes: number
-    postLikes: number
-    commentLikes: number
-    dayPageComments: number
-    dayPageLikes: number
+    total?: number
+    comments?: number
+    likes?: number
+    postLikes?: number
+    commentLikes?: number
   }>
 }
 
@@ -170,8 +166,8 @@ export default function Status() {
           <HeroText>
             <h1>Daykeeper Status</h1>
             <p>
-              Server health, user growth, content activity, and interaction
-              metrics — updated on demand.
+              Current service health and activity totals from the Daykeeper
+              API. Choose a date range and refresh at any time.
             </p>
           </HeroText>
         </Hero>
@@ -247,8 +243,8 @@ export default function Status() {
                   <h3>Database</h3>
                   <DetailList>
                     <li>State: {serverStatus.database.readyState} ({serverStatus.database.status})</li>
-                    <li>Host: {serverStatus.database.host ?? "—"}</li>
-                    <li>Name: {serverStatus.database.name ?? "—"}</li>
+                    <li>Host: {serverStatus.database.host ?? "Not available"}</li>
+                    <li>Name: {serverStatus.database.name ?? "Not available"}</li>
                   </DetailList>
                 </Panel>
 
@@ -312,14 +308,14 @@ export default function Status() {
               <StatGrid>
                 <StatCard>
                   <label>New registrations</label>
-                  <StatValue>{users.totals.users.toLocaleString()}</StatValue>
+                  <StatValue>{formatNumber(users.totals.users)}</StatValue>
                 </StatCard>
                 <StatCard>
                   <label>Daily average</label>
                   <StatValue>
                     {users.range.days > 0
-                      ? (users.totals.users / users.range.days).toFixed(1)
-                      : "—"}
+                      ? (numberValue(users.totals.users) / users.range.days).toFixed(1)
+                      : "Not available"}
                   </StatValue>
                 </StatCard>
               </StatGrid>
@@ -329,14 +325,14 @@ export default function Status() {
                   <h3>New registrations</h3>
                   <span>
                     {activeUsersIdx !== null
-                      ? users.series[activeUsersIdx]?.count
-                      : users.totals.users}
+                      ? formatNumber(users.series[activeUsersIdx]?.count)
+                      : formatNumber(users.totals.users)}
                   </span>
                 </ChartHeader>
                 <SingleLineChart
                   data={users.series.map((item) => ({
                     label: item.bucket,
-                    value: item.count,
+                    value: numberValue(item.count),
                   }))}
                   color="var(--dk-sky)"
                   onHoverChange={(pt) =>
@@ -363,20 +359,20 @@ export default function Status() {
             <AnalyticsGrid>
               <StatGrid>
                 <StatCard>
-                  <label>Day pages</label>
-                  <StatValue>{content.totals.dayPages.toLocaleString()}</StatValue>
+                  <label>Total content</label>
+                  <StatValue>{formatNumber(content.totals.total)}</StatValue>
                 </StatCard>
                 <StatCard>
                   <label>Tasks</label>
-                  <StatValue>{content.totals.tasks.toLocaleString()}</StatValue>
+                  <StatValue>{formatNumber(content.totals.tasks)}</StatValue>
                 </StatCard>
                 <StatCard>
                   <label>Events</label>
-                  <StatValue>{content.totals.events.toLocaleString()}</StatValue>
+                  <StatValue>{formatNumber(content.totals.events)}</StatValue>
                 </StatCard>
                 <StatCard>
                   <label>Posts</label>
-                  <StatValue>{content.totals.posts.toLocaleString()}</StatValue>
+                  <StatValue>{formatNumber(content.totals.posts)}</StatValue>
                 </StatCard>
               </StatGrid>
 
@@ -385,32 +381,32 @@ export default function Status() {
                   <h3>Content activity</h3>
                   <span>
                     {activeContentIdx !== null
-                      ? content.series[activeContentIdx]?.total
-                      : content.totals.total}
+                      ? formatNumber(content.series[activeContentIdx]?.total)
+                      : formatNumber(content.totals.total)}
                   </span>
                 </ChartHeader>
                 <MultiLineChart
                   labels={content.series.map((item) => item.bucket)}
                   series={[
                     {
-                      label: "day pages",
+                      label: "total",
                       color: "var(--dk-sky)",
-                      values: content.series.map((item) => item.dayPages),
+                      values: content.series.map((item) => numberValue(item.total)),
                     },
                     {
                       label: "tasks",
                       color: "var(--dk-success)",
-                      values: content.series.map((item) => item.tasks),
+                      values: content.series.map((item) => numberValue(item.tasks)),
                     },
                     {
                       label: "events",
                       color: "var(--dk-slate)",
-                      values: content.series.map((item) => item.events),
+                      values: content.series.map((item) => numberValue(item.events)),
                     },
                     {
-                      label: "posts (legacy)",
+                      label: "posts",
                       color: "var(--dk-ink)",
-                      values: content.series.map((item) => item.posts),
+                      values: content.series.map((item) => numberValue(item.posts)),
                     },
                   ]}
                   onHoverChange={setActiveContentIdx}
@@ -433,20 +429,20 @@ export default function Status() {
             <AnalyticsGrid>
               <StatGrid>
                 <StatCard>
-                  <label>Day page likes</label>
-                  <StatValue>{interactions.totals.dayPageLikes.toLocaleString()}</StatValue>
+                  <label>Total interactions</label>
+                  <StatValue>{formatNumber(interactions.totals.total)}</StatValue>
                 </StatCard>
                 <StatCard>
-                  <label>Day page comments</label>
-                  <StatValue>{interactions.totals.dayPageComments.toLocaleString()}</StatValue>
+                  <label>Comments</label>
+                  <StatValue>{formatNumber(interactions.totals.comments)}</StatValue>
                 </StatCard>
                 <StatCard>
-                  <label>Post comments</label>
-                  <StatValue>{interactions.totals.comments.toLocaleString()}</StatValue>
+                  <label>Likes</label>
+                  <StatValue>{formatNumber(interactions.totals.likes)}</StatValue>
                 </StatCard>
                 <StatCard>
                   <label>Post likes</label>
-                  <StatValue>{interactions.totals.postLikes.toLocaleString()}</StatValue>
+                  <StatValue>{formatNumber(interactions.totals.postLikes)}</StatValue>
                 </StatCard>
               </StatGrid>
 
@@ -455,32 +451,32 @@ export default function Status() {
                   <h3>Interaction activity</h3>
                   <span>
                     {activeInteractionsIdx !== null
-                      ? interactions.series[activeInteractionsIdx]?.total
-                      : interactions.totals.total}
+                      ? formatNumber(interactions.series[activeInteractionsIdx]?.total)
+                      : formatNumber(interactions.totals.total)}
                   </span>
                 </ChartHeader>
                 <MultiLineChart
                   labels={interactions.series.map((item) => item.bucket)}
                   series={[
                     {
-                      label: "day page likes",
+                      label: "total",
                       color: "var(--dk-sky)",
-                      values: interactions.series.map((item) => item.dayPageLikes),
+                      values: interactions.series.map((item) => numberValue(item.total)),
                     },
                     {
-                      label: "day page comments",
+                      label: "comments",
                       color: "var(--dk-success)",
-                      values: interactions.series.map((item) => item.dayPageComments),
+                      values: interactions.series.map((item) => numberValue(item.comments)),
                     },
                     {
-                      label: "post comments",
+                      label: "likes",
                       color: "var(--dk-slate)",
-                      values: interactions.series.map((item) => item.comments),
+                      values: interactions.series.map((item) => numberValue(item.likes)),
                     },
                     {
                       label: "post likes",
                       color: "var(--dk-ink)",
-                      values: interactions.series.map((item) => item.postLikes),
+                      values: interactions.series.map((item) => numberValue(item.postLikes)),
                     },
                   ]}
                   onHoverChange={setActiveInteractionsIdx}
@@ -572,7 +568,7 @@ function SingleLineChart({
         {formatBucketDate(active.label)}: {active.value}
       </ChartMeta>
       <ChartMeta>
-        {formatBucketDate(data[0]?.label)} – {formatBucketDate(data[data.length - 1]?.label)}
+        {formatBucketDate(data[0]?.label)} to {formatBucketDate(data[data.length - 1]?.label)}
       </ChartMeta>
     </>
   )
@@ -684,7 +680,7 @@ function MultiLineChart({
         {series.map((l) => `${l.label} ${l.values[resolvedIdx]}`).join("  ·  ")}
       </ChartMeta>
       <ChartMeta>
-        {formatBucketDate(labels[0])} – {formatBucketDate(labels[labels.length - 1])}
+        {formatBucketDate(labels[0])} to {formatBucketDate(labels[labels.length - 1])}
       </ChartMeta>
     </>
   )
@@ -692,9 +688,17 @@ function MultiLineChart({
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function formatBytes(n: number) {
+function numberValue(value?: number) {
+  return typeof value === "number" && Number.isFinite(value) ? value : 0
+}
+
+function formatNumber(value?: number) {
+  return numberValue(value).toLocaleString()
+}
+
+function formatBytes(n?: number) {
   const units = ["B", "KB", "MB", "GB"]
-  let size = n
+  let size = numberValue(n)
   let i = 0
   while (size >= 1024 && i < units.length - 1) { size /= 1024; i++ }
   return `${size.toFixed(size >= 10 ? 0 : 1)} ${units[i]}`

@@ -6,7 +6,8 @@ import BrowserFrame from "../../ui/BrowserFrame"
 const HeroSection = styled.section`
   padding-top: calc(4.25rem + clamp(3.5rem, 8vw, 6.5rem));
   padding-bottom: clamp(3.5rem, 8vw, 6rem);
-  background: linear-gradient(180deg, #f5f9ff 0%, var(--dk-paper) 62%);
+  background: #f5f9ff;
+  border-bottom: var(--border-soft);
 `
 
 const Inner = styled(Container)`
@@ -16,18 +17,9 @@ const Inner = styled(Container)`
   text-align: center;
 `
 
-const Beta = styled.span`
-  font-size: var(--text-xs);
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--dk-slate);
-  opacity: 0.75;
-  margin-bottom: var(--space-6);
-`
-
 const Title = styled.h1`
   font-size: var(--text-hero);
-  max-width: 16ch;
+  max-width: 17ch;
 `
 
 const Sub = styled.p`
@@ -56,12 +48,11 @@ function Hero() {
   return (
     <HeroSection>
       <Inner>
-        <Beta>In beta at daykeeper.app</Beta>
-        <Title>Keep your days.</Title>
+        <Title>Remember the day you actually had.</Title>
         <Sub>
-          A diary that lives online — as social, or as private, as you want.
-          Write your day, keep it to yourself, or share it with the people who
-          matter.
+          Daykeeper gives each date one page for notes, tasks, plans, photos,
+          and videos. Keep it private, share it with close friends, or publish
+          it when you choose.
         </Sub>
         <Ctas>
           <PrimaryButton
@@ -69,9 +60,9 @@ function Hero() {
             target="_blank"
             rel="noreferrer"
           >
-            Start your journal
+            Write today&rsquo;s page
           </PrimaryButton>
-          <GhostButton href="#tour">See how it works</GhostButton>
+          <GhostButton href="#tour">See a day in Daykeeper</GhostButton>
         </Ctas>
 
         <Shot id="tour">

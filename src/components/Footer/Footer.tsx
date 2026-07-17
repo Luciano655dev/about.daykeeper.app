@@ -19,8 +19,8 @@ function Footer() {
             />
           </a>
           <p>
-            A journal that lives online — as social, or as private, as you
-            want it to be.
+            One dated page for the notes, plans, photos, and moments you want
+            to remember.
           </p>
         </FooterIntro>
 
@@ -103,11 +103,9 @@ function Footer() {
       </OtherContainer>
 
       <Copyright>
-        &copy; {new Date().getFullYear()} Daykeeper. Made with care around{" "}
-        <a href="https://daykeeper.app" target="_blank" rel="noreferrer">
-          daykeeper.app
-        </a>
-        .
+        &copy; {new Date().getFullYear()} Daykeeper. Product and brand rights
+        reserved. Open-source code follows the license published with each
+        repository.
       </Copyright>
     </Container>
   )

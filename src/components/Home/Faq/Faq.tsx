@@ -22,12 +22,6 @@ const Item = styled.details`
   border-radius: var(--radius-md);
   padding: 0;
   overflow: hidden;
-  transition: box-shadow 0.3s var(--ease-out);
-
-  &[open] {
-    box-shadow: var(--shadow-soft);
-  }
-
   summary {
     display: flex;
     align-items: center;
@@ -81,17 +75,17 @@ const faqs = [
     q: "Is it available now?",
     a: (
       <>
-        Yes — Daykeeper is live in beta at{" "}
+        Yes. Open{" "}
         <a href="https://daykeeper.app" target="_blank" rel="noreferrer">
           daykeeper.app
         </a>
-        . Beta means we ship improvements often and things keep getting better.
+        {" "}in any modern browser and create an account.
       </>
     ),
   },
   {
     q: "Can I keep everything private?",
-    a: "Completely. Every entry has its own visibility — and if you never share anything, Daykeeper works perfectly as a personal journal.",
+    a: "Yes. Every page has its own visibility setting. You can use Daykeeper as a private journal without following or sharing with anyone.",
   },
   {
     q: "Is there a mobile app?",
@@ -101,7 +95,7 @@ const faqs = [
     q: "Is Daykeeper open source?",
     a: (
       <>
-        Yes — the API is MIT-licensed and development happens in the open on{" "}
+        Yes. The API is MIT-licensed and its development happens on{" "}
         <a
           href="https://github.com/luciano655dev/daykeeper-api"
           target="_blank"
@@ -118,7 +112,7 @@ const faqs = [
     a: (
       <>
         Write to{" "}
-        <a href="mailto:contact@daykeeper.app">contact@daykeeper.app</a> — a
+        <a href="mailto:contact@daykeeper.app">contact@daykeeper.app</a>. A
         real person reads it.
       </>
     ),

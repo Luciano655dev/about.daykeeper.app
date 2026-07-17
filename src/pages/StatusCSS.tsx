@@ -58,7 +58,6 @@ export const Panel = styled.div`
   background: var(--dk-paper);
   border: var(--border-soft);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-soft);
 
   h3 {
     margin: 0 0 var(--space-4);
@@ -78,11 +77,10 @@ export const Panel = styled.div`
     padding: 0.75rem 1.25rem;
     border-radius: var(--radius-full);
     cursor: pointer;
-    transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+    transition: background-color 0.2s var(--ease-out);
 
     &:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 20px -8px rgba(74, 158, 245, 0.6);
+      background: #318be7;
     }
   }
 

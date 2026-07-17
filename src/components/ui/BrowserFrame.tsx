@@ -6,7 +6,6 @@ const Frame = styled.figure`
   border-radius: var(--radius-md);
   overflow: hidden;
   background: var(--dk-paper);
-  box-shadow: var(--shadow-lift);
 `
 
 const Bar = styled.div`

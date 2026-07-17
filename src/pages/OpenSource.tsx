@@ -9,7 +9,7 @@ import Reveal from "../components/ui/Reveal"
 const PageHero = styled.div`
   padding-top: calc(4.25rem + clamp(3rem, 8vw, 6rem));
   padding-bottom: clamp(3rem, 7vw, 5rem);
-  background: linear-gradient(180deg, rgba(234, 242, 255, 0.7), var(--dk-paper));
+  background: rgba(234, 242, 255, 0.7);
   text-align: center;
 
   h1 {
@@ -38,11 +38,11 @@ const RepoCard = styled.a`
   border-radius: var(--radius-lg);
   padding: var(--space-8);
   color: var(--dk-slate);
-  transition: box-shadow 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+  transition: border-color 0.3s var(--ease-out), background 0.3s var(--ease-out);
 
   &:hover {
-    box-shadow: var(--shadow-soft);
-    transform: translateY(-2px);
+    border-color: rgba(74, 158, 245, 0.35);
+    background: rgba(234, 242, 255, 0.25);
   }
 
   h3 {
@@ -113,7 +113,7 @@ const repos = [
   {
     name: "Daykeeper API",
     license: "MIT",
-    desc: "The backend that powers everything — accounts, day pages, the social graph, and security.",
+    desc: "The backend for accounts, day pages, the social graph, and security.",
     href: "https://github.com/luciano655dev/daykeeper-api",
   },
   {
@@ -178,8 +178,8 @@ export default function OpenSource() {
               <div>
                 <h2>Contributing</h2>
                 <p>
-                  Contributions are welcome across the board — code, docs,
-                  design, QA, or just a well-written bug report. Browse the
+                  Contributions are welcome in code, docs, design, QA, and bug
+                  reports. Browse the
                   open issues on GitHub, or open a new one if you&rsquo;ve
                   spotted something.
                 </p>

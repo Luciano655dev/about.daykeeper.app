@@ -22,14 +22,17 @@ function FinalCta() {
   return (
     <Wrap>
       <Container $width="narrow">
-        <h2>Start with today.</h2>
-        <p>One page a day. Yours to keep, yours to share — always yours.</p>
+        <h2>Put today somewhere you can find it.</h2>
+        <p>
+          Open Daykeeper and make your first page. It can stay private for as
+          long as you want.
+        </p>
         <PrimaryButton
           href="https://daykeeper.app"
           target="_blank"
           rel="noreferrer"
         >
-          Start your journal
+          Create today&rsquo;s page
         </PrimaryButton>
       </Container>
     </Wrap>

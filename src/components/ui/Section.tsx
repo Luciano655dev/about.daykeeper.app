@@ -7,12 +7,7 @@ const Section = styled.section<{ $tint?: boolean; $compact?: boolean }>`
   ${({ $tint }) =>
     $tint &&
     css`
-      background: linear-gradient(
-        180deg,
-        rgba(234, 242, 255, 0.45) 0%,
-        rgba(234, 242, 255, 0.75) 50%,
-        rgba(234, 242, 255, 0.45) 100%
-      );
+      background: rgba(234, 242, 255, 0.55);
     `}
 `
 

@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 export const Container = styled.footer`
-  background: linear-gradient(180deg, rgba(234, 242, 255, 0.35), rgba(234, 242, 255, 0.7));
+  background: rgba(234, 242, 255, 0.55);
   border-top: var(--border-soft);
   padding: clamp(3rem, 7vw, 5rem) 0 var(--space-8);
 `
