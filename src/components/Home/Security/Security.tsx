@@ -1,5 +1,7 @@
 import styled from "styled-components"
 import Container from "../../ui/Container"
+import Reveal from "../../ui/Reveal"
+import { Icon, type IconName } from "../../ui/Icon"
 
 const Wrap = styled.section`
   padding-block: clamp(3.5rem, 8vw, 6rem);
@@ -32,7 +34,19 @@ const Lead = styled.div`
   }
 `
 
-const List = styled.dl`
+const Eyebrow = styled.p`
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-4) !important;
+  color: var(--dk-sky-deep) !important;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+`
+
+const List = styled.div`
   margin: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -42,14 +56,15 @@ const List = styled.dl`
     grid-template-columns: 1fr;
   }
 
-  dt {
+  h3 {
     font-family: var(--font-display);
+    font-size: var(--text-base);
     font-weight: 700;
     color: var(--dk-ink);
     margin-bottom: var(--space-2);
   }
 
-  dd {
+  p {
     margin: 0;
     font-size: var(--text-sm);
     line-height: 1.6;
@@ -57,31 +72,66 @@ const List = styled.dl`
   }
 `
 
-const items = [
-  ["Two-factor authentication", "Use email codes or an authenticator app."],
-  ["Sign in with Google", "Use your Google account without another password."],
-  ["Device management", "Review active sessions and revoke any device you do not recognize."],
-  ["Screened media", "Photos and videos pass automated safety checks before they are shared."],
+const Item = styled.div`
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: var(--space-3);
+`
+
+const ItemIcon = styled.span`
+  padding-top: 0.1rem;
+  color: var(--dk-sky-deep);
+`
+
+const items: { icon: IconName; term: string; description: string }[] = [
+  {
+    icon: "shield",
+    term: "Two-factor authentication",
+    description: "Use email codes or an authenticator app.",
+  },
+  {
+    icon: "lock",
+    term: "Sign in with Google",
+    description: "Use your Google account without another password.",
+  },
+  {
+    icon: "history",
+    term: "Device management",
+    description: "Review active sessions and revoke any device you do not recognize.",
+  },
+  {
+    icon: "image",
+    term: "Screened media",
+    description: "Photos and videos pass automated safety checks before they are shared.",
+  },
 ]
 
 function Security() {
   return (
     <Wrap>
       <Layout>
-        <Lead>
-          <h2>Private means private.</h2>
-          <p>
-            Visibility is set per page. Account controls include two-factor
-            authentication and device sessions, while uploads pass through
-            automated media checks.
-          </p>
-        </Lead>
+        <Reveal>
+          <Lead>
+            <Eyebrow><Icon name="lock" size={16} /> Account controls</Eyebrow>
+            <h2>Private means private.</h2>
+            <p>
+              Visibility is set per page. Account controls include two-factor
+              authentication and device sessions, while uploads pass through
+              automated media checks.
+            </p>
+          </Lead>
+        </Reveal>
         <List>
-          {items.map(([term, desc]) => (
-            <div key={term}>
-              <dt>{term}</dt>
-              <dd>{desc}</dd>
-            </div>
+          {items.map((item, index) => (
+            <Reveal key={item.term} delay={index * 70}>
+              <Item>
+                <ItemIcon aria-hidden="true"><Icon name={item.icon} size={17} /></ItemIcon>
+                <div>
+                  <h3>{item.term}</h3>
+                  <p>{item.description}</p>
+                </div>
+              </Item>
+            </Reveal>
           ))}
         </List>
       </Layout>

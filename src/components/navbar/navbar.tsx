@@ -14,16 +14,8 @@ import {
 } from "./navbarCSS"
 
 function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8)
-    onScroll()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
 
   useEffect(() => {
     setOpen(false)
@@ -38,7 +30,7 @@ function Navbar() {
 
   return (
     <>
-      <Header $scrolled={scrolled}>
+      <Header>
         <Nav aria-label="Main">
           <LogoLink to="/" aria-label="Daykeeper home">
             <img src="/Logo/SVG/Daykeeper-Horizontal-Main.svg" alt="Daykeeper" />

@@ -34,6 +34,12 @@ const RevealBox = styled.div<{ $delay: number }>`
     opacity: 1;
     transform: none;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 `
 
 type RevealProps = {

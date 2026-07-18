@@ -1,7 +1,6 @@
 import styled from "styled-components"
 import Container from "../../ui/Container"
 import { PrimaryButton, GhostButton } from "../../ui/Button"
-import BrowserFrame from "../../ui/BrowserFrame"
 
 const HeroSection = styled.section`
   padding-top: calc(4.25rem + clamp(3.5rem, 8vw, 6.5rem));
@@ -15,6 +14,12 @@ const Inner = styled(Container)`
   flex-direction: column;
   align-items: center;
   text-align: center;
+`
+
+const Logo = styled.img`
+  width: 2.5rem;
+  height: auto;
+  margin-bottom: var(--space-6);
 `
 
 const Title = styled.h1`
@@ -38,16 +43,15 @@ const Ctas = styled.div`
   margin-top: var(--space-8);
 `
 
-const Shot = styled.div`
-  width: 100%;
-  max-width: 62rem;
-  margin-top: clamp(3rem, 7vw, 5rem);
-`
-
 function Hero() {
   return (
     <HeroSection>
       <Inner>
+        <Logo
+          src="/Logo/SVG/Daykeeper-Mark-Blue.svg"
+          alt=""
+          aria-hidden="true"
+        />
         <Title>Remember the day you actually had.</Title>
         <Sub>
           Daykeeper gives each date one page for notes, tasks, plans, photos,
@@ -62,16 +66,8 @@ function Hero() {
           >
             Write today&rsquo;s page
           </PrimaryButton>
-          <GhostButton href="#tour">See a day in Daykeeper</GhostButton>
+          <GhostButton href="#features">See how it works</GhostButton>
         </Ctas>
-
-        <Shot id="tour">
-          <BrowserFrame
-            eager
-            src="/shots/feed.png"
-            alt="The Daykeeper feed, showing daily entries from people you follow"
-          />
-        </Shot>
       </Inner>
     </HeroSection>
   )

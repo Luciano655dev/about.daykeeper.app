@@ -1,16 +1,14 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 
-export const Header = styled.header<{ $scrolled: boolean }>`
+export const Header = styled.header`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
   background: var(--dk-paper);
-  border-bottom: 1px solid
-    ${({ $scrolled }) => ($scrolled ? "rgba(15, 23, 42, 0.08)" : "transparent")};
-  transition: border-color 0.3s var(--ease-out);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
 `
 
 export const Nav = styled.nav`

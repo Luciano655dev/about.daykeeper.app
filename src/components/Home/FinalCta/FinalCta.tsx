@@ -1,6 +1,8 @@
 import styled from "styled-components"
 import Container from "../../ui/Container"
 import { PrimaryButton } from "../../ui/Button"
+import Reveal from "../../ui/Reveal"
+import { Icon } from "../../ui/Icon"
 
 const Wrap = styled.section`
   padding-block: clamp(4rem, 10vw, 7rem);
@@ -22,18 +24,20 @@ function FinalCta() {
   return (
     <Wrap>
       <Container $width="narrow">
-        <h2>Put today somewhere you can find it.</h2>
-        <p>
-          Open Daykeeper and make your first page. It can stay private for as
-          long as you want.
-        </p>
-        <PrimaryButton
-          href="https://daykeeper.app"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Create today&rsquo;s page
-        </PrimaryButton>
+        <Reveal>
+          <h2>Put today somewhere you can find it.</h2>
+          <p>
+            Open Daykeeper and make your first page. It can stay private for as
+            long as you want.
+          </p>
+          <PrimaryButton
+            href="https://daykeeper.app"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Create today&rsquo;s page <Icon name="arrow" size={16} />
+          </PrimaryButton>
+        </Reveal>
       </Container>
     </Wrap>
   )
